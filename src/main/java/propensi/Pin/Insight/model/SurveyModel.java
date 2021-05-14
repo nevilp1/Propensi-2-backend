@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="survey")
@@ -22,13 +23,13 @@ public class SurveyModel implements Serializable {
     @Column(name="researchType", nullable = false)
     private String researchType;
 
-    @NotNull
-    @Column(name="linkToForm", nullable = false)
-    private String linkToForm;
-
-    @NotNull
-    @Column(name="linkToParticipant", nullable = false)
-    private String linkToParticipant;
+//    @NotNull
+//    @Column(name="linkToForm", nullable = false)
+//    private String linkToForm;
+//
+//    @NotNull
+//    @Column(name="linkToParticipant", nullable = false)
+//    private String linkToParticipant;
 
     @NotNull
     @Column(name="picName", nullable = false)
@@ -43,6 +44,10 @@ public class SurveyModel implements Serializable {
     private String content;
 
     @NotNull
+    @Column(name="criteria", nullable = false)
+    private String criteria;
+
+    @NotNull
     @Column(name="status", nullable = false)
     private Boolean status;
 
@@ -50,6 +55,9 @@ public class SurveyModel implements Serializable {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="inputDate", nullable = false)
     private Date inputDate;
+
+    @OneToMany(mappedBy = "survey", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<ParticipantModel> listParticipant;
 
     public Long getId() {
         return id;
@@ -75,21 +83,21 @@ public class SurveyModel implements Serializable {
         this.researchType = researchType;
     }
 
-    public String getLinkToForm() {
-        return linkToForm;
-    }
-
-    public void setLinkToForm(String linkToForm) {
-        this.linkToForm = linkToForm;
-    }
-
-    public String getLinkToParticipant() {
-        return linkToParticipant;
-    }
-
-    public void setLinkToParticipant(String linkToParticipant) {
-        this.linkToParticipant = linkToParticipant;
-    }
+//    public String getLinkToForm() {
+//        return linkToForm;
+//    }
+//
+//    public void setLinkToForm(String linkToForm) {
+//        this.linkToForm = linkToForm;
+//    }
+//
+//    public String getLinkToParticipant() {
+//        return linkToParticipant;
+//    }
+//
+//    public void setLinkToParticipant(String linkToParticipant) {
+//        this.linkToParticipant = linkToParticipant;
+//    }
 
     public String getPicName() {
         return picName;
@@ -129,5 +137,21 @@ public class SurveyModel implements Serializable {
 
     public void setInputDate(Date inputDate) {
         this.inputDate = inputDate;
+    }
+
+    public String getCriteria() {
+        return criteria;
+    }
+
+    public void setCriteria(String criteria) {
+        this.criteria = criteria;
+    }
+
+    public List<ParticipantModel> getListParticipant() {
+        return listParticipant;
+    }
+
+    public void setListParticipant(List<ParticipantModel> listParticipant) {
+        this.listParticipant = listParticipant;
     }
 }
