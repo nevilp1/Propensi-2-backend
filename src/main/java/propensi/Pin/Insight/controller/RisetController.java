@@ -32,7 +32,7 @@ import java.util.*;
 @Controller
 public class RisetController {
 
-//    @Qualifier ("risetServiceImpl")
+    //    @Qualifier ("risetServiceImpl")
     @Autowired
     private RisetService risetService;
 
@@ -101,6 +101,16 @@ public class RisetController {
         }catch (NoSuchElementException e){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Riset with ID " + String.valueOf(id) + " doesn't exist!"
+            );
+        }
+    }
+    @GetMapping("/insight/risetID/{id}")
+    private List<Map<String,Object>> retriveListInsightByIDRiset(@PathVariable (value = "id") Long id){
+        try {
+            return risetService.listInsightByIDRiset(id);
+        }catch (NoSuchElementException e){
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Insight with ID Riset " + String.valueOf(id) + " doesn't exist!"
             );
         }
     }
