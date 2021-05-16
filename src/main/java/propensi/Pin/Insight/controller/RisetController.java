@@ -9,20 +9,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import propensi.Pin.Insight.model.ListArchetypeModel;
-import propensi.Pin.Insight.model.RisetModel;
-import propensi.Pin.Insight.model.UserModel;
-import propensi.Pin.Insight.model.UserTypeModel;
-import propensi.Pin.Insight.rest.ArchiveDetail;
-import propensi.Pin.Insight.rest.BaseResponseRiset;
-import propensi.Pin.Insight.rest.RisetDetail;
-import propensi.Pin.Insight.rest.UpdateRiset;
-import propensi.Pin.Insight.service.ArchetypeService;
-import propensi.Pin.Insight.service.ListArchetypeService;
-import propensi.Pin.Insight.service.RisetService;
-import propensi.Pin.Insight.service.UserService;
+import propensi.Pin.Insight.model.*;
+import propensi.Pin.Insight.rest.*;
+import propensi.Pin.Insight.service.*;
 
 import javax.validation.Valid;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -42,6 +34,12 @@ public class RisetController {
     //    @Qualifier ("risetServiceImpl")
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private InsightRestService insightRestService;
+
+    @Autowired
+    private InsightArchetypeService insightArchetypeService;
 
     @Autowired
     private ListArchetypeService listArchetypeService;
@@ -173,5 +171,36 @@ public class RisetController {
                     HttpStatus.NOT_FOUND, "Riset with ID " + String.valueOf(id) + " doesn't exist!"
             );
         }
+    }
+    @PostMapping(value = "/add/insight/risetID/{id}")
+    private BaseResponseRiset<RisetaddInsight> addInsightinRiset (@Valid @PathVariable (value="id") Long id
+            ,@RequestBody RisetaddInsight risetaddInsight
+            ,BindingResult bindingResult){
+        BaseResponseRiset<RisetaddInsight> response = new BaseResponseRiset<RisetaddInsight>();
+        RisetModel target = risetService.getRisetById(id).get();
+        InsightModel newInsight = new InsightModel();
+        UserModel user = userService.getUserModelByUsername(risetaddInsight.getUserCreate());
+        System.out.println(user);
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+        newInsight.setInputDate(timestamp);
+        newInsight.setInsightPicName(target.getPic());
+        newInsight.setInsightTeamName(target.getTeam());
+        newInsight.setNote("testDoangNih");
+        newInsight.setInsightStatement(risetaddInsight.getInsightStatement());
+        newInsight.setStatus(true);
+        newInsight.setRisetInsight(target);
+        newInsight.setUser(user);
+        InsightModel saveData = insightRestService.createInsight(newInsight);
+
+        for (int i = 0; i < risetaddInsight.getArchetype().size() ; i++) {
+            InsightArchetypeModel insightArchetypeModel = new InsightArchetypeModel();
+            insightArchetypeModel.setInsightModel(saveData);
+            insightArchetypeModel.setUserType(risetaddInsight.getArchetype().get(i));
+            insightArchetypeService.addListArchetype(insightArchetypeModel);
+        }
+
+        return response;
+
     }
 }
