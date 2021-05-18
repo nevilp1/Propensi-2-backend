@@ -51,6 +51,10 @@ public class UserModel implements Serializable {
     @Column(name="email", nullable = false)
     private String email;
 
+    // ini blm diganti not null
+    @Column(name="status", nullable = true)
+    private Boolean status;
+
     @NotNull
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name="registerDate", nullable = false)
@@ -161,5 +165,13 @@ public class UserModel implements Serializable {
 
     public void setRegisterDate(Date registerDate) {
         this.registerDate = registerDate;
+    }
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }
