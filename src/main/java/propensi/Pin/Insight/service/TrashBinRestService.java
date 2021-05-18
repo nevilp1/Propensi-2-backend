@@ -9,12 +9,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public interface UserRestService {
-    List<Map<String, Object>> listUser();
-    Optional<UserModel> getUser(Long id);
-    void addUser(UserModel add);
-    HashMap<String, Object> getUserById(Long id);
+public interface TrashBinRestService {
+    List<Map<String, Object>> listRiset();
 
-    void deleteUser(Long id);
 
 }

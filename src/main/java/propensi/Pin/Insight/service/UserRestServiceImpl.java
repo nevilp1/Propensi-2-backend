@@ -8,6 +8,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.stereotype.Service;
 import propensi.Pin.Insight.model.ERole;
+import propensi.Pin.Insight.model.RisetModel;
 import propensi.Pin.Insight.model.RoleModel;
 import propensi.Pin.Insight.model.UserModel;
 import propensi.Pin.Insight.repository.UserDb;
@@ -22,6 +23,11 @@ public class UserRestServiceImpl implements UserRestService{
   
     @Autowired
     UserDb userDb;
+
+    @Override
+    public void addUser(UserModel add) {
+        userDb.save(add);
+    }
 
     @Override
     public Optional<UserModel> getUser(Long id) {
