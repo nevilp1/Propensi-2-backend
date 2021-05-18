@@ -2,6 +2,7 @@ package propensi.Pin.Insight.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import propensi.Pin.Insight.model.InsightModel;
 import propensi.Pin.Insight.model.ListArchetypeModel;
 import propensi.Pin.Insight.model.RisetModel;
 import propensi.Pin.Insight.model.UserTypeModel;
@@ -76,6 +77,30 @@ public class RisetServiceImpl implements RisetService{
     }
 
     @Override
+    public List<Map<String, Object>> listInsightByIDRiset(Long id) {
+        List<Map<String,Object>> list = new ArrayList<>();
+        Optional<RisetModel> targetRiset = risetDb.findById(id);
+
+        List<InsightModel> insightID  = targetRiset.get().getInsightModels();
+
+
+        for (int i = 0; i < insightID.size(); i++) {
+            List<UserTypeModel> listArchetypeInsight = new ArrayList<>();
+            HashMap<String,Object> insightTarget = new HashMap<>();
+            if (insightID.get(i).getStatus() == true) {
+                for (int j = 0; j < insightID.get(i).getInsightArchetypeModels().size(); j++) {
+                    listArchetypeInsight.add(insightID.get(i).getInsightArchetypeModels().get(j).getUserType());
+                }
+                insightTarget.put("id", insightID.get(i).getId());
+                insightTarget.put("insight_statement", insightID.get(i).getInsightStatement());
+                insightTarget.put("insightArchetype", listArchetypeInsight);
+                list.add(insightTarget);
+            }
+        }
+        return list;
+    }
+
+    @Override
     public Optional<RisetModel> getRisetById(Long id) {
         return risetDb.findById(id);
     }
@@ -99,12 +124,26 @@ public class RisetServiceImpl implements RisetService{
         DateFormat date2 = new SimpleDateFormat("yyyy-MM-dd");
         String formated2 = date2.format(dateTempResearchDate2);
 
-
         List<UserTypeModel> list = new ArrayList<>();
         for (int i = 0; i < targetRiset.get().getListArchetypeModel().size(); i++) {
             list.add(targetRiset.get().getListArchetypeModel().get(i).getUserType());
-
         }
+
+        HashMap<String,Object> insightTarget = new HashMap<>();
+        List<InsightModel> insightID  = targetRiset.get().getInsightModels();
+
+        for (int i = 0; i < insightID.size(); i++) {
+            List<UserTypeModel> listArchetypeInsight = new ArrayList<>();
+            if (insightID.get(i).getStatus() == true) {
+                for (int j = 0; j < insightID.get(i).getInsightArchetypeModels().size(); j++) {
+                    listArchetypeInsight.add(insightID.get(i).getInsightArchetypeModels().get(j).getUserType());
+                }
+                insightTarget.put("id", insightID.get(i).getId());
+                insightTarget.put("insight_statement", insightID.get(i).getInsightStatement());
+                insightTarget.put("insightArchetype", listArchetypeInsight);
+            }
+        }
+
         target.put("research_title", targetRiset.get().getResearchTitle());
         target.put("research_date", formated);
         target.put("research_type", targetRiset.get().getResearchType());
@@ -117,6 +156,7 @@ public class RisetServiceImpl implements RisetService{
         target.put("research_link", targetRiset.get().getResearchLink());
         target.put("research_date_update", formated2);
         target.put("id",targetRiset.get().getId());
+        target.put("insightList",insightTarget);
         return target;
     }
 

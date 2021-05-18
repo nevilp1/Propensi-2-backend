@@ -26,8 +26,8 @@ public class SurveyRestServiceImpl implements SurveyRestService{
 
     @Override
     public SurveyModel createSurvey(SurveyModel survey){
-        survey.setStatus(true);
-        survey.setInputDate(new Date());
+//        survey.setStatus(true);
+//        survey.setInputDate(new Date());
         return surveyDb.save(survey);
     }
 
@@ -50,9 +50,10 @@ public class SurveyRestServiceImpl implements SurveyRestService{
             survey.setResearchType(surveyUpdated.getResearchType());
             survey.setPicName(surveyUpdated.getPicName());
             survey.setTeam(surveyUpdated.getTeam());
-            survey.setLinkToForm(surveyUpdated.getLinkToForm());
-            survey.setLinkToParticipant(surveyUpdated.getLinkToParticipant());
+//            survey.setLinkToForm(surveyUpdated.getLinkToForm());
+//            survey.setLinkToParticipant(surveyUpdated.getLinkToParticipant());
             survey.setContent(surveyUpdated.getContent());
+            survey.setCriteria(surveyUpdated.getCriteria());
             surveyDb.save(survey);
             return survey;
         }catch (NullPointerException e){
