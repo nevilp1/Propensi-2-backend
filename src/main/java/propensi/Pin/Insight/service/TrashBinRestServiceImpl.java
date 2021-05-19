@@ -7,10 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.stereotype.Service;
-import propensi.Pin.Insight.model.ERole;
-import propensi.Pin.Insight.model.RisetModel;
-import propensi.Pin.Insight.model.RoleModel;
-import propensi.Pin.Insight.model.UserModel;
+import propensi.Pin.Insight.model.*;
 import propensi.Pin.Insight.repository.InsightDb;
 import propensi.Pin.Insight.repository.RisetDb;
 import propensi.Pin.Insight.repository.UserDb;
@@ -35,6 +32,11 @@ public class TrashBinRestServiceImpl implements TrashBinRestService {
     InsightDb insightDb;
 
     @Override
+    public void addRiset(RisetModel add) {
+        risetDb.save(add);
+    }
+
+    @Override
     public List<Map<String, Object>> listRiset() {
         List<Map<String,Object>> list = new ArrayList<>();
         List<RisetModel> allRiset = risetDb.findAll();
@@ -57,5 +59,60 @@ public class TrashBinRestServiceImpl implements TrashBinRestService {
             }
         }
         return list;
+    }
+
+    @Override
+    public Optional<RisetModel> getRisetById(Long id) {
+        return risetDb.findById(id);
+    }
+
+    @Override
+    public HashMap<String, Object> getRisetByIdRiset(Long id) {
+        HashMap<String,Object> target = new HashMap<>();
+        Optional<RisetModel> targetRiset = risetDb.findById(id);
+
+        // Untuk Detail Riset
+        Date dateTempResearchDate = targetRiset.get().getResearchDate();
+        DateFormat date = new SimpleDateFormat("E, dd MMM yyyy");
+        String formated = date.format(dateTempResearchDate);
+
+        Date dateTempInput = targetRiset.get().getInputDate();
+        DateFormat inputDate = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss ");
+        String formatedInput = inputDate.format(dateTempInput);
+
+        List<UserTypeModel> list = new ArrayList<>();
+        for (int i = 0; i < targetRiset.get().getListArchetypeModel().size(); i++) {
+            list.add(targetRiset.get().getListArchetypeModel().get(i).getUserType());
+        }
+
+        HashMap<String,Object> insightTarget = new HashMap<>();
+        List<InsightModel> insightID  = targetRiset.get().getInsightModels();
+
+        for (int i = 0; i < insightID.size(); i++) {
+            List<UserTypeModel> listArchetypeInsight = new ArrayList<>();
+            if (insightID.get(i).getStatus() == true) {
+                for (int j = 0; j < insightID.get(i).getInsightArchetypeModels().size(); j++) {
+                    listArchetypeInsight.add(insightID.get(i).getInsightArchetypeModels().get(j).getUserType());
+                }
+                insightTarget.put("id", insightID.get(i).getId());
+                insightTarget.put("insight_statement", insightID.get(i).getInsightStatement());
+                insightTarget.put("insightArchetype", listArchetypeInsight);
+            }
+        }
+
+        target.put("research_title", targetRiset.get().getResearchTitle());
+        target.put("research_date", formated);
+        target.put("research_type", targetRiset.get().getResearchType());
+        target.put("archetype", list);
+        target.put("project_name", targetRiset.get().getProjectName());
+        target.put("team", targetRiset.get().getTeam());
+        target.put("pic", targetRiset.get().getPic());
+        target.put("status",targetRiset.get().getStatus());
+        target.put("input_date", formatedInput);
+        target.put("insight_amount", targetRiset.get().getInsight_amount());
+        target.put("research_link", targetRiset.get().getResearchLink());
+        target.put("id",targetRiset.get().getId());
+        target.put("insightList",insightTarget);
+        return target;
     }
 }
