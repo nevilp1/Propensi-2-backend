@@ -5,6 +5,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import propensi.Pin.Insight.model.InsightModel;
+import propensi.Pin.Insight.model.UserModel;
+import propensi.Pin.Insight.rest.BaseResponse;
 import propensi.Pin.Insight.service.UserRestService;
 
 import java.util.*;
@@ -33,7 +36,7 @@ public class UserRestController {
     }
 
     @DeleteMapping(value = "/user/{id}/delete")
-    private ResponseEntity<String> archiveUser(@PathVariable("id") Long id) {
+    private ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
         try {
             userRestService.deleteUser(id);
             return ResponseEntity.ok("User with ID " + String.valueOf(id) + "has been deleted!");
@@ -44,20 +47,15 @@ public class UserRestController {
         }
     }
 
-//    @PutMapping(value = "/user/{id}/archive")
-//    private ResponseEntity<String> archiveUser(@PathVariable("id") Long id, @RequestBody ArchiveDetail user){
-//        try{
-//            UserModel target = userRestService.getUser(id).get();
-//            Boolean archive = user.getStatus();
-//            target.setStatus(archive);
-//            System.out.println(archive);
-//            userRestService.addUser(target);
-//
-//            return ResponseEntity.ok("User has been archived");
-//        }catch (NoSuchElementException e) {
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, "User with ID " + String.valueOf(id) + " doesn't exist!"
-//            );
-//        }
-//    }
+    @PutMapping("/user/{id}/archive")
+    private Object archiveUser(@PathVariable(value = "id") Long id) {
+        try {
+            Optional<UserModel> userModel = userRestService.getUser(id);
+            userModel.get().setStatus(false);
+            userRestService.archiveUser(userModel.get());
+            return new BaseResponse<>(200, "Data has been archived", null);
+        } catch (NoSuchElementException e) {
+            return new BaseResponse<>(500, "Internal Server error", null);
+        }
+    }
 }
