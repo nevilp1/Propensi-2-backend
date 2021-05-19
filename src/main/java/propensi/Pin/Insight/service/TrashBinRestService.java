@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 public interface TrashBinRestService {
+    void addRiset(RisetModel add);
     List<Map<String, Object>> listRiset();
+    Optional<RisetModel> getRisetById(Long id);
+    HashMap<String,Object> getRisetByIdRiset(Long id);
 
 
 }
