@@ -7,9 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import org.springframework.stereotype.Service;
-import propensi.Pin.Insight.model.ERole;
-import propensi.Pin.Insight.model.RoleModel;
-import propensi.Pin.Insight.model.UserModel;
+import propensi.Pin.Insight.model.*;
 import propensi.Pin.Insight.repository.UserDb;
 
 import javax.transaction.Transactional;
@@ -23,6 +21,16 @@ public class UserRestServiceImpl implements UserRestService{
     @Autowired
     UserDb userDb;
 
+//    @Override
+//    public void addUser(UserModel add) {
+//        userDb.save(add);
+//    }
+
+    @Override
+    public UserModel archiveUser(UserModel userModel) {
+        return userDb.save(userModel);
+    }
+
     @Override
     public Optional<UserModel> getUser(Long id) {
         return userDb.findById(id);
@@ -33,21 +41,23 @@ public class UserRestServiceImpl implements UserRestService{
         List<UserModel> allUser = userDb.findAll();
 
         for (int i = 0; i < allUser.size(); i++) {
-            Map<String, Object> data = new HashMap<>();
-            UserModel target = allUser.get(i);
-            String idUser = "ID-" + target.getId().toString();
-            data.put("id", target.getId());
-            data.put("idUser", idUser);
-            data.put("nama", target.getNama());
-            data.put("username", target.getUsername());
-            data.put("team", target.getTeam());
-            data.put("role", target.getRoles());
-            String userRole = target.getRoles().toString();
-            Set<RoleModel> x = target.getRoles();
-//            String[] y = x.toArray(new String[0]);
-//            data.put("role", y);
-//            System.out.println(y);
-            userList.add(data);
+            if(allUser.get(i).getStatus() == false){
+                continue;
+            }else {
+                Map<String, Object> data = new HashMap<>();
+                UserModel target = allUser.get(i);
+                String idUser = "ID-" + target.getId().toString();
+                data.put("id", target.getId());
+                data.put("idUser", idUser);
+                data.put("nama", target.getNama());
+                data.put("username", target.getUsername());
+                data.put("team", target.getTeam());
+                data.put("role", target.getRoles());
+                data.put("status", target.getStatus());
+                String userRole = target.getRoles().toString();
+                Set<RoleModel> x = target.getRoles();
+                userList.add(data);
+            }
         }
         return userList;
     }

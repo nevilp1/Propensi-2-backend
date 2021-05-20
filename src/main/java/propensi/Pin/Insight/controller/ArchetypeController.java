@@ -10,7 +10,6 @@ import propensi.Pin.Insight.model.UserTypeModel;
 import propensi.Pin.Insight.service.ArchetypeService;
 
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController

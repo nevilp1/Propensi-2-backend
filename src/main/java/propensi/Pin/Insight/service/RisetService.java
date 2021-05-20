@@ -12,6 +12,7 @@ public interface RisetService {
     void addRiset(RisetModel add);
     List<Map<String,Object>> listRiset();
     List<Map<String,Object>> insightRisetList();
+    List<Map<String,Object>> listInsightByIDRiset(Long id);
     Optional<RisetModel> getRisetById(Long id);
     HashMap<String,Object> getRisetByIdRiset(Long id);
     RisetModel updateRiset (RisetModel riset);
