@@ -3,6 +3,7 @@ package propensi.Pin.Insight.rest;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import propensi.Pin.Insight.model.InsightArchetypeModel;
+import propensi.Pin.Insight.model.KomentarModel;
 import propensi.Pin.Insight.model.UserTypeModel;
 
 import java.util.Date;
@@ -37,6 +38,9 @@ public class InsightDetail {
 
     @JsonProperty("archetype")
     private List<UserTypeModel> listArchetype;
+
+    @JsonProperty("listKomentar")
+    private List<KomentarDetail> listKomentar;
 
     public Long getId() {
         return id;
@@ -110,7 +114,15 @@ public class InsightDetail {
         this.listArchetype = listArchetype;
     }
 
-//
+    public List<KomentarDetail> getListKomentar() {
+        return listKomentar;
+    }
+
+    public void setListKomentar(List<KomentarDetail> listKomentar) {
+        this.listKomentar = listKomentar;
+    }
+
+    //
 //    @Override
 //    public String toString() {
 //        return "InsightDetail{" +
