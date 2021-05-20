@@ -17,4 +17,5 @@ public interface RisetService {
     RisetModel updateRiset (RisetModel riset);
     void archiveRiset(Long id);
     Long count();
+    
 }
