@@ -12,4 +12,5 @@ import java.util.Optional;
 public interface RisetDb extends JpaRepository<RisetModel, Long> {
     Optional<RisetModel> findById(Long id);
     List<RisetModel> findAll();
+    List<RisetModel> findAllByTeam(String team);
 }
