@@ -19,8 +19,6 @@ public class UserRestController {
     @Autowired
     UserRestService userRestService;
 
-    @Autowired
-
     @GetMapping("/users")
     private List<Map<String, Object>> retrieveListUser() {return userRestService.listUser();}
 
