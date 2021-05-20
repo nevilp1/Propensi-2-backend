@@ -44,6 +44,12 @@ public class RisetController {
     @Autowired
     private ListArchetypeService listArchetypeService;
 
+    @GetMapping("/totalRiset")
+    private Long totalRiset() {
+        System.out.println(risetService.count());
+        return risetService.count();
+    }
+
     @GetMapping("/listRiset")
     private List<Map<String,Object>> retriveListRiset() {
         return risetService.listRiset();

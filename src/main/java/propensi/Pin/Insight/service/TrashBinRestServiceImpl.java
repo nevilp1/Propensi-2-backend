@@ -1,33 +1,35 @@
 package propensi.Pin.Insight.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
-import propensi.Pin.Insight.model.InsightModel;
-import propensi.Pin.Insight.model.ListArchetypeModel;
-import propensi.Pin.Insight.model.RisetModel;
-import propensi.Pin.Insight.model.UserTypeModel;
+import propensi.Pin.Insight.model.*;
+import propensi.Pin.Insight.repository.InsightDb;
 import propensi.Pin.Insight.repository.RisetDb;
 import propensi.Pin.Insight.repository.UserDb;
 
 import javax.transaction.Transactional;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 @Transactional
-public class RisetServiceImpl implements RisetService{
+public class TrashBinRestServiceImpl implements TrashBinRestService {
+
+    @Autowired
+    UserDb userDb;
 
     @Autowired
     RisetDb risetDb;
 
     @Autowired
-    UserDb userDb;
-
-    @Override
-    public Long count() {
-        return risetDb.count();
-    }
+    InsightDb insightDb;
 
     @Override
     public void addRiset(RisetModel add) {
@@ -39,7 +41,7 @@ public class RisetServiceImpl implements RisetService{
         List<Map<String,Object>> list = new ArrayList<>();
         List<RisetModel> allRiset = risetDb.findAll();
         for (int i = 0; i < allRiset.size(); i++) {
-            if(allRiset.get(i).getStatus() == false){
+            if(allRiset.get(i).getStatus() == true){
                 continue;
             }else {
                 Map<String,Object> data = new HashMap<>();
@@ -54,47 +56,6 @@ public class RisetServiceImpl implements RisetService{
                 data.put("id",allRiset.get(i).getId());
                 data.put("status", allRiset.get(i).getStatus());
                 list.add(data);
-            }
-        }
-        return list;
-    }
-
-    @Override
-    public List<Map<String, Object>> insightRisetList() {
-        List<Map<String,Object>> list = new ArrayList<>();
-        List<RisetModel> allRiset = risetDb.findAll();
-        for (int i = 0; i < allRiset.size(); i++) {
-            if(allRiset.get(i).getStatus() == false){
-                continue;
-            }else {
-                Map<String,Object> data = new HashMap<>();
-                data.put("title",allRiset.get(i).getResearchTitle());
-                data.put("id",allRiset.get(i).getId());
-                list.add(data);
-            }
-        }
-        return list;
-    }
-
-    @Override
-    public List<Map<String, Object>> listInsightByIDRiset(Long id) {
-        List<Map<String,Object>> list = new ArrayList<>();
-        Optional<RisetModel> targetRiset = risetDb.findById(id);
-
-        List<InsightModel> insightID  = targetRiset.get().getInsightModels();
-
-
-        for (int i = 0; i < insightID.size(); i++) {
-            List<UserTypeModel> listArchetypeInsight = new ArrayList<>();
-            HashMap<String,Object> insightTarget = new HashMap<>();
-            if (insightID.get(i).getStatus() == true) {
-                for (int j = 0; j < insightID.get(i).getInsightArchetypeModels().size(); j++) {
-                    listArchetypeInsight.add(insightID.get(i).getInsightArchetypeModels().get(j).getUserType());
-                }
-                insightTarget.put("id", insightID.get(i).getId());
-                insightTarget.put("insight_statement", insightID.get(i).getInsightStatement());
-                insightTarget.put("insightArchetype", listArchetypeInsight);
-                list.add(insightTarget);
             }
         }
         return list;
@@ -118,11 +79,6 @@ public class RisetServiceImpl implements RisetService{
         Date dateTempInput = targetRiset.get().getInputDate();
         DateFormat inputDate = new SimpleDateFormat("E, dd MMM yyyy HH:mm:ss ");
         String formatedInput = inputDate.format(dateTempInput);
-
-        // Untuk Update Riset
-        Date dateTempResearchDate2 = targetRiset.get().getResearchDate();
-        DateFormat date2 = new SimpleDateFormat("yyyy-MM-dd");
-        String formated2 = date2.format(dateTempResearchDate2);
 
         List<UserTypeModel> list = new ArrayList<>();
         for (int i = 0; i < targetRiset.get().getListArchetypeModel().size(); i++) {
@@ -151,23 +107,12 @@ public class RisetServiceImpl implements RisetService{
         target.put("project_name", targetRiset.get().getProjectName());
         target.put("team", targetRiset.get().getTeam());
         target.put("pic", targetRiset.get().getPic());
+        target.put("status",targetRiset.get().getStatus());
         target.put("input_date", formatedInput);
         target.put("insight_amount", targetRiset.get().getInsight_amount());
         target.put("research_link", targetRiset.get().getResearchLink());
-        target.put("research_date_update", formated2);
         target.put("id",targetRiset.get().getId());
         target.put("insightList",insightTarget);
         return target;
-    }
-
-    @Override
-    public RisetModel updateRiset(RisetModel riset) {
-        return risetDb.save(riset);
-    }
-
-    @Override
-    public void archiveRiset(Long id) {
-        RisetModel target = risetDb.findById(id).get();
-        target.setStatus(false);
     }
 }

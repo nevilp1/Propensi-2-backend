@@ -123,6 +123,7 @@ public class AuthController {
         user.setRoles(roles);
 
         if (signUpRequest.getPassword().equals(signUpRequest.getRepassword())){
+            user.setStatus(true);
             userDb.save(user);
         } else {
             return null;
@@ -180,6 +181,7 @@ public class AuthController {
         } else if (editUser.getPassword().length() >= 6  && editUser.getPassword().equals(editUser.getRepassword())) {
 //            System.out.println("keganti");
             user.setPassword(encoder.encode(editUser.getPassword()));
+            user.setStatus(true);
             userDb.save(user);
         }
 

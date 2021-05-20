@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import propensi.Pin.Insight.model.*;
 import propensi.Pin.Insight.model.InsightArchetypeModel;
 import propensi.Pin.Insight.rest.*;
+import propensi.Pin.Insight.rest.BaseResponse;
+import propensi.Pin.Insight.rest.InsightDetail;
+import propensi.Pin.Insight.rest.InsightDetailCreate;
+import propensi.Pin.Insight.rest.InsightUserType;
 import propensi.Pin.Insight.service.*;
 
 import java.sql.Timestamp;
@@ -40,6 +44,11 @@ public class InsightRestController {
 
     @Autowired
     UserRestService userRestService;
+
+    @GetMapping("/insight-dashboard")
+    private InsightUserType getInsightByUserType() {
+        return insightRestService.getJumlahInsightByUserType();
+    }
 
     @GetMapping("/insights")
     private BaseResponse<List> getAllInsight() {

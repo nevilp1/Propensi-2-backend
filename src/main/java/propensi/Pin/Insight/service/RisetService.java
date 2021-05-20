@@ -17,4 +17,6 @@ public interface RisetService {
     HashMap<String,Object> getRisetByIdRiset(Long id);
     RisetModel updateRiset (RisetModel riset);
     void archiveRiset(Long id);
+    Long count();
+    
 }
