@@ -58,15 +58,16 @@ public class InsightModel implements Serializable {
     @JsonIgnore
     private RisetModel risetInsight;
 
-//    @OneToMany(mappedBy = "insightModel", fetch = FetchType.LAZY)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonIgnore
-//    private List<InsightArchetypeModel> insightArchetypeModels;
 
     @OneToMany(mappedBy = "insightModel", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private List<InsightArchetypeModel> insightArchetypeModels;
+
+    @OneToMany(mappedBy = "insightModel", fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private List<KomentarModel> insightCommentModels;
+
 
     @Override
     public String toString() {
@@ -82,6 +83,14 @@ public class InsightModel implements Serializable {
                 ", risetInsight=" + risetInsight +
                 ", insightArchetypeModels=" + insightArchetypeModels +
                 '}';
+    }
+
+    public List<KomentarModel> getInsightCommentModels() {
+        return insightCommentModels;
+    }
+
+    public void setInsightCommentModels(List<KomentarModel> insightCommentModels) {
+        this.insightCommentModels = insightCommentModels;
     }
 
     public Long getId() {

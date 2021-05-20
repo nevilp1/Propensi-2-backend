@@ -6,9 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import propensi.Pin.Insight.model.*;
 import propensi.Pin.Insight.model.InsightArchetypeModel;
-import propensi.Pin.Insight.rest.BaseResponse;
-import propensi.Pin.Insight.rest.InsightDetail;
-import propensi.Pin.Insight.rest.InsightDetailCreate;
+import propensi.Pin.Insight.rest.*;
 import propensi.Pin.Insight.service.*;
 
 import java.sql.Timestamp;
@@ -30,6 +28,9 @@ public class InsightRestController {
 
     @Autowired
     InsightArchetypeService insightArchetypeService;
+
+    @Autowired
+    KomentarService komentarService;
 
 //    @Autowired
 //    TrashBinService trashBinService;
@@ -56,6 +57,7 @@ public class InsightRestController {
         try {
             Optional<InsightModel> insightModel = insightRestService.getInsight(id);
             List<UserTypeModel> list = new ArrayList<>();
+            List<KomentarDetail> listKomentar = new ArrayList<>();
 
             for (int i = 0; i < insightModel.get().getInsightArchetypeModels().size(); i++) {
                 list.add(insightModel.get().getInsightArchetypeModels().get(i).getUserType());
@@ -71,6 +73,19 @@ public class InsightRestController {
             insightDetail.setNote(insightModel.get().getNote());
 //            insightDetail.setRiset(insightModel.get().getRiset().getResearchTitle());
             insightDetail.setStatus(insightModel.get().getStatus());
+            List<KomentarModel> insightKomentar = insightModel.get().getInsightCommentModels();
+            for (KomentarModel komentar: insightKomentar
+            ) {
+                KomentarDetail komentarObject = new KomentarDetail();
+                komentarObject.setKomentar(komentar.getKomentar());
+                komentarObject.setId(komentar.getId());
+                komentarObject.setUsername(komentar.getUserKomentar().getUsername());
+                komentarObject.setInsightId(Math.toIntExact(komentar.getInsightModel().getId()));
+                komentarObject.setInputDate(komentar.getInputDate());
+                listKomentar.add(komentarObject);
+            }
+            insightDetail.setListKomentar(listKomentar);
+
             return new BaseResponse<>(200, "Insight Data Retrieved", insightDetail);
         } catch (NoSuchElementException e) {
             return new BaseResponse<>(404, "Not found", null);
@@ -200,5 +215,37 @@ public class InsightRestController {
             insightArchetypeService.addListArchetype(insightArchetypeModel);
         }
         return new BaseResponse<>(200, "Data has been updated", insightModel);
+    }
+
+    @GetMapping("/komentars")
+    private Object getAllKomentar(){
+        List<KomentarModel> allKomentar = komentarService.getAllKomentar();
+        return new BaseResponse<>(200, "Retrieved all komentar successful", allKomentar);
+    }
+
+    @PostMapping(value = "/komentar/create")
+    private Object createKomentar(@RequestBody KomentarDetailCreate postData) {
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        UserModel currentUser = userRestService.getUser(Long.valueOf(postData.getUserId())).get();
+        InsightModel currentInsight = insightRestService.getInsight(Long.valueOf(postData.getInsightId())).get();
+
+        KomentarModel newKomentar = new KomentarModel();
+        newKomentar.setKomentar(postData.getKomentar());
+        newKomentar.setUserKomentar(currentUser);
+        newKomentar.setInsightModel(currentInsight);
+        newKomentar.setInputDate(timestamp);
+
+        KomentarModel saveData = komentarService.createKomentar(newKomentar);
+        return new BaseResponse<>(200, "Komentar Created", saveData);
+    }
+
+    @PostMapping("/komentar/delete/{id}")
+    private Object deleteKomentar(@PathVariable(value = "id") Long id){
+        try{
+            komentarService.deleteKomentar(id);
+            return new BaseResponse<>(200, "Komentar deleted succesfully", null);
+        } catch (NoSuchElementException e) {
+            return new BaseResponse<>(500, "Internal server error, failed updating entry", null);
+        }
     }
 }
