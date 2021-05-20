@@ -25,6 +25,11 @@ public class RisetServiceImpl implements RisetService{
     UserDb userDb;
 
     @Override
+    public Long count() {
+        return risetDb.count();
+    }
+
+    @Override
     public void addRiset(RisetModel add) {
         risetDb.save(add);
     }

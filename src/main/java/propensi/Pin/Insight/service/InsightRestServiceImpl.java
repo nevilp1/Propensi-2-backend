@@ -1,16 +1,16 @@
 package propensi.Pin.Insight.service;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import propensi.Pin.Insight.model.InsightModel;
 import propensi.Pin.Insight.model.RisetModel;
 import propensi.Pin.Insight.model.UserTypeModel;
 import propensi.Pin.Insight.model.InsightArchetypeModel;
-import propensi.Pin.Insight.repository.InsightDb;
-import propensi.Pin.Insight.repository.RisetDb;
-import propensi.Pin.Insight.repository.SurveyDb;
+import propensi.Pin.Insight.repository.*;
 import propensi.Pin.Insight.rest.InsightDetail;
 import propensi.Pin.Insight.rest.InsightDetailCreate;
+import propensi.Pin.Insight.rest.InsightUserType;
 
 import javax.transaction.Transactional;
 import java.util.*;
@@ -28,6 +28,33 @@ public class InsightRestServiceImpl implements InsightRestService {
 
     @Autowired
     RisetDb risetDb;
+
+    @Autowired
+    ArchetypeDb archetypeDb;
+
+    @Autowired
+    InsightArchetypeDb insightArchetypeDb;
+
+    @Autowired
+    ListArchetypeDb listArchetypeDb;
+
+    @Override
+    public InsightUserType getJumlahInsightByUserType() {
+        List<UserTypeModel> listArchetype = archetypeDb.findAll();
+        InsightUserType temp = new InsightUserType();
+        List<String> listTypeName = new ArrayList<>();
+        List<Long> listJumlah = new ArrayList<>();
+
+        for(UserTypeModel i : listArchetype) {
+            listTypeName.add(i.getTypeName());
+            Long jumlah = insightArchetypeDb.findAllByUserType(i).stream().count();
+            listJumlah.add(jumlah);
+        }
+        temp.setJumlahInsight(listJumlah);
+        temp.setUserType(listTypeName);
+
+        return temp;
+    }
 
     @Override
     public List<InsightDetail> getAllInsight() {
