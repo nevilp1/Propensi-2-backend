@@ -14,6 +14,4 @@ public interface RisetDb extends JpaRepository<RisetModel, Long> {
     Optional<RisetModel> findById(Long id);
     List<RisetModel> findAll();
 
-    @Query("SELECT team FROM riset")
-    List<String> getListTeam();
 }
