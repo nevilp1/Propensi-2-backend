@@ -11,6 +11,7 @@ import propensi.Pin.Insight.model.*;
 import propensi.Pin.Insight.repository.InsightDb;
 import propensi.Pin.Insight.repository.RisetDb;
 import propensi.Pin.Insight.repository.UserDb;
+import propensi.Pin.Insight.rest.InsightDetail;
 
 import javax.transaction.Transactional;
 
@@ -114,5 +115,49 @@ public class TrashBinRestServiceImpl implements TrashBinRestService {
         target.put("id",targetRiset.get().getId());
         target.put("insightList",insightTarget);
         return target;
+    }
+
+    @Override
+    public List<InsightDetail> getAllInsight() {
+        List<InsightModel> insightDataFromDb = insightDb.findAllByStatusIsFalse();
+        List<InsightDetail> insightDetails = new LinkedList<>();
+
+        List<InsightArchetypeModel> archetypeModels = new ArrayList<>();
+
+        for (int i = 0; i < insightDataFromDb.size(); i++) {
+
+            List<UserTypeModel> listArchetype = new ArrayList<>();
+            InsightModel target = insightDb.findById(insightDataFromDb.get(i).getId()).get();
+            for (int j = 0; j < target.getInsightArchetypeModels().size() ; j++) {
+                listArchetype.add(target.getInsightArchetypeModels().get(j).getUserType());
+            }
+            for (InsightModel k : insightDataFromDb) {
+                InsightDetail insight = new InsightDetail();
+                insight.setId(k.getId());
+                insight.setInputDate(k.getInputDate());
+                insight.setInsightStatement(k.getInsightStatement());
+                insight.setInsightPicName(k.getInsightPicName());
+                insight.setListArchetype(listArchetype);
+                insight.setInsightTeamName(k.getInsightTeamName());
+                insight.setNote(k.getNote());
+                insight.setRiset(k.getRisetInsight().getResearchTitle());
+                insight.setStatus(k.getStatus());
+                insightDetails.add(insight);
+            }
+            return insightDetails;
+        }
+        return insightDetails;
+    }
+
+    @Override
+    public Optional<InsightModel> getInsight(Long idInsight) {
+        Optional<InsightModel> insightModel = insightDb.findById(idInsight);
+
+        return insightModel;
+    }
+
+    @Override
+    public InsightModel activeInsight(InsightModel insightModel) {
+        return insightDb.save(insightModel);
     }
 }
