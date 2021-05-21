@@ -36,4 +36,30 @@ public class ParticipantRestController {
             return participantRestService.createParticipant(participant);
         }
     }
+
+    @GetMapping(value="/participant/{participantId}")
+    private ParticipantModel retrieveParticipant(@PathVariable("participantId") Long participantId){
+        try{
+            return participantRestService.getParticipantByParticipantId(participantId);
+        }catch (NoSuchElementException e){
+            throw  new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "ID Participant"+String.valueOf(participantId)+" Not Found"
+            );
+        }
+    }
+
+    @PutMapping(value="participant/update/{participantId}")
+    private ResponseEntity<String> updateParticipant(
+            @PathVariable (value = "participantId") Long participantId,
+            @RequestBody ParticipantModel participant
+    ) {
+        try {
+            participantRestService.updateParticipant(participantId, participant);
+            return ResponseEntity.ok("Update kamar success");
+        } catch (NoSuchElementException e){
+            throw  new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Participant with ID " + String.valueOf(participantId) + " Not Found"
+            );
+        }
+    }
 }
