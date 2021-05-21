@@ -1,7 +1,9 @@
 package propensi.Pin.Insight.service;
 
 import propensi.Pin.Insight.model.RisetModel;
+import propensi.Pin.Insight.repository.RisetTeam;
 import propensi.Pin.Insight.rest.RisetDetail;
+import propensi.Pin.Insight.rest.TeamDetail;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,5 +20,5 @@ public interface RisetService {
     RisetModel updateRiset (RisetModel riset);
     void archiveRiset(Long id);
     Long count();
-    
+    TeamDetail listTeam();
 }

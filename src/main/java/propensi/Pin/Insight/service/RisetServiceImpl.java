@@ -7,7 +7,9 @@ import propensi.Pin.Insight.model.ListArchetypeModel;
 import propensi.Pin.Insight.model.RisetModel;
 import propensi.Pin.Insight.model.UserTypeModel;
 import propensi.Pin.Insight.repository.RisetDb;
+import propensi.Pin.Insight.repository.RisetTeam;
 import propensi.Pin.Insight.repository.UserDb;
+import propensi.Pin.Insight.rest.TeamDetail;
 
 import javax.transaction.Transactional;
 import java.text.DateFormat;
@@ -32,6 +34,24 @@ public class RisetServiceImpl implements RisetService{
     @Override
     public void addRiset(RisetModel add) {
         risetDb.save(add);
+    }
+
+    @Override
+    public TeamDetail listTeam() {
+        List<RisetTeam> listTeam = risetDb.findTeam();
+        List<String> listTim = new ArrayList<>();
+        List<Long> listJumlah = new ArrayList<>();
+        TeamDetail resp = new TeamDetail();
+
+        for(RisetTeam i : listTeam){
+            listTim.add(i.getTeam());
+            listJumlah.add(i.getCount());
+        }
+
+        resp.setJumlahRiset(listJumlah);
+        resp.setNamaTim(listTim);
+
+        return resp;
     }
 
     @Override
