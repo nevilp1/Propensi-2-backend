@@ -55,7 +55,7 @@ public class ParticipantRestController {
     ) {
         try {
             participantRestService.updateParticipant(participantId, participant);
-            return ResponseEntity.ok("Update kamar success");
+            return ResponseEntity.ok("Update participant success");
         } catch (NoSuchElementException e){
             throw  new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Participant with ID " + String.valueOf(participantId) + " Not Found"
