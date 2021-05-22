@@ -55,7 +55,11 @@ public class TrashBinRestServiceImpl implements TrashBinRestService {
                 data.put("project_name",allRiset.get(i).getProjectName());
                 data.put("insight_amount",allRiset.get(i).getInsight_amount());
                 data.put("id",allRiset.get(i).getId());
-                data.put("status", allRiset.get(i).getStatus());
+                String status = "";
+                if (allRiset.get(i).getStatus() == false){
+                    status = "Archive";
+                }
+                data.put("status", status);
                 list.add(data);
             }
         }
