@@ -91,7 +91,7 @@ public class TrashBinRestServiceImpl implements TrashBinRestService {
 
         for (int i = 0; i < insightID.size(); i++) {
             List<UserTypeModel> listArchetypeInsight = new ArrayList<>();
-            if (insightID.get(i).getStatus() == true) {
+            if (insightID.get(i).getStatus() == false) {
                 for (int j = 0; j < insightID.get(i).getInsightArchetypeModels().size(); j++) {
                     listArchetypeInsight.add(insightID.get(i).getInsightArchetypeModels().get(j).getUserType());
                 }
@@ -159,5 +159,34 @@ public class TrashBinRestServiceImpl implements TrashBinRestService {
     @Override
     public InsightModel activeInsight(InsightModel insightModel) {
         return insightDb.save(insightModel);
+    }
+
+    @Override
+    public List<Map<String, Object>> listUser() {
+        List<Map<String, Object>> userList = new ArrayList<>();
+        List<UserModel> allUser = userDb.findAll();
+
+        for (int i = 0; i < allUser.size(); i++) {
+            if(allUser.get(i).getStatus() == true){
+                continue;
+            }else {
+                Map<String, Object> data = new HashMap<>();
+                UserModel target = allUser.get(i);
+                String idUser = "ID-" + target.getId().toString();
+                String status = "";
+                if (target.getStatus() == false){
+                    status = "Archive";
+                }
+                data.put("id", target.getId());
+                data.put("idUser", idUser);
+                data.put("nama", target.getNama());
+                data.put("username", target.getUsername());
+                data.put("team", target.getTeam());
+                data.put("role", target.getRoles());
+                data.put("status", status);
+                userList.add(data);
+            }
+        }
+        return userList;
     }
 }

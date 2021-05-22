@@ -116,7 +116,7 @@ public class RisetController {
     @GetMapping("/insight/risetID/{id}")
     private List<Map<String,Object>> retriveListInsightByIDRiset(@PathVariable (value = "id") Long id){
         try {
-            return risetService.listInsightByIDRiset(id);
+            return risetService.listInsightByIDRiset(id, true);
         }catch (NoSuchElementException e){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND, "Insight with ID Riset " + String.valueOf(id) + " doesn't exist!"
@@ -171,11 +171,15 @@ public class RisetController {
     private ResponseEntity<String> archiveResearch(@PathVariable("id") Long id, @RequestBody ArchiveDetail riset){
         try{
             RisetModel target = risetService.getRisetById(id).get();
-            Boolean archive = riset.getStatus();
-            target.setStatus(archive);
-            System.out.println(archive);
+            Boolean status = riset.getStatus();
+            List<InsightModel> listInsight = target.getInsightModels();
+            for (int i = 0; i < listInsight.size() ; i++) {
+                InsightModel targetInsight = listInsight.get(i);
+                targetInsight.setStatus(status);
+                insightRestService.archiveInsight(targetInsight);
+            }
+            target.setStatus(status);
             risetService.addRiset(target);
-
             return ResponseEntity.ok("Research has been archived");
         }catch (NoSuchElementException e) {
             throw new ResponseStatusException(

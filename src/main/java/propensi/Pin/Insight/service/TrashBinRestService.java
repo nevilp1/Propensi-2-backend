@@ -21,5 +21,7 @@ public interface TrashBinRestService {
     Optional<InsightModel> getInsight(Long idInsight);
     InsightModel activeInsight(InsightModel insightModel);
 
+    List<Map<String, Object>> listUser();
+
 
 }
