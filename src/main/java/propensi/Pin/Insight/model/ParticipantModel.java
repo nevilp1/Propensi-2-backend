@@ -40,7 +40,7 @@ public class ParticipantModel implements Serializable {
     private Integer participantStatus;
 
     @NotNull
-    @Column(name="participantNotes", nullable = false)
+    @Column(name="participantNotes")
     private String participantNotes;
 
     @NotNull

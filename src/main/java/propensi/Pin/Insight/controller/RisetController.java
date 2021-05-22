@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import propensi.Pin.Insight.model.*;
+import propensi.Pin.Insight.repository.RisetTeam;
 import propensi.Pin.Insight.rest.*;
 import propensi.Pin.Insight.service.*;
 
@@ -43,6 +44,16 @@ public class RisetController {
 
     @Autowired
     private ListArchetypeService listArchetypeService;
+
+    @GetMapping("/totalRiset")
+    private Long totalRiset() {
+        System.out.println(risetService.count());
+        return risetService.count();
+    }
+    @GetMapping("/risetTeam")
+    private TeamDetail risetTeam() {
+        return risetService.listTeam();
+    }
 
     @GetMapping("/listRiset")
     private List<Map<String,Object>> retriveListRiset() {
