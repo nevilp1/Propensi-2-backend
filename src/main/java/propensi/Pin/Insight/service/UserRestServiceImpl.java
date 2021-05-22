@@ -35,7 +35,8 @@ public class UserRestServiceImpl implements UserRestService{
     public Optional<UserModel> getUser(Long id) {
         return userDb.findById(id);
     }
-  
+
+    @Override
     public List<Map<String, Object>> listUser() {
         List<Map<String, Object>> userList = new ArrayList<>();
         List<UserModel> allUser = userDb.findAll();
