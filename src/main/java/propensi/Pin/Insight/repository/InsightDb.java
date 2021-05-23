@@ -10,6 +10,5 @@ import java.util.List;
 @Repository
 public interface InsightDb extends JpaRepository<InsightModel, Long>{
     List<InsightModel> findAllByStatusIsTrue();
-
     List<InsightModel> findAllByStatusIsFalse();
 }
