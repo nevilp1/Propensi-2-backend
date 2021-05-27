@@ -50,9 +50,9 @@ public class RisetController {
         System.out.println(risetService.count());
         return risetService.count();
     }
-    @GetMapping("/risetTeam")
-    private TeamDetail risetTeam() {
-        return risetService.listTeam();
+    @GetMapping("/risetTeam/{bulan}")
+    private TeamDetail risetTeam(@PathVariable (value = "bulan") Long bulan){
+        return risetService.listTeam(bulan);
     }
 
     @GetMapping("/listRiset")

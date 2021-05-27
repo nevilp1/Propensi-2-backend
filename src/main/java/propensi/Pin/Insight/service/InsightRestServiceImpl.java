@@ -39,7 +39,7 @@ public class InsightRestServiceImpl implements InsightRestService {
     ListArchetypeDb listArchetypeDb;
 
     @Override
-    public InsightUserType getJumlahInsightByUserType() {
+    public InsightUserType getJumlahInsightByUserType(Long bulan) {
         List<UserTypeModel> listArchetype = archetypeDb.findAll();
         InsightUserType temp = new InsightUserType();
         List<String> listTypeName = new ArrayList<>();

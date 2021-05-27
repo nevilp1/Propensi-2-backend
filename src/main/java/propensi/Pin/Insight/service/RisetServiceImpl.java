@@ -37,8 +37,8 @@ public class RisetServiceImpl implements RisetService{
     }
 
     @Override
-    public TeamDetail listTeam() {
-        List<RisetTeam> listTeam = risetDb.findTeam();
+    public TeamDetail listTeam(Long bulan) {
+        List<RisetTeam> listTeam = risetDb.findTeam(bulan);
         List<String> listTim = new ArrayList<>();
         List<Long> listJumlah = new ArrayList<>();
         TeamDetail resp = new TeamDetail();

@@ -14,6 +14,6 @@ public interface InsightRestService {
     Optional<InsightModel> getInsight(Long idInsight);
     InsightModel createInsight(InsightModel insightModel);
     InsightModel archiveInsight(InsightModel insightModel);
-    InsightUserType getJumlahInsightByUserType();
+    InsightUserType getJumlahInsightByUserType(Long bulan);
     InsightModel updateInsight(InsightModel insightModel);
 }
