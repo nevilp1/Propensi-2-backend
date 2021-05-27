@@ -1,13 +1,14 @@
 package propensi.Pin.Insight.service;
 
 import propensi.Pin.Insight.model.ParticipantModel;
+import propensi.Pin.Insight.rest.ParticipantDetail;
 
 import java.util.List;
 
 public interface ParticipantRestService {
     List<ParticipantModel> retrieveListParticipant();
 
-    ParticipantModel createParticipant(ParticipantModel participant);
+    ParticipantModel createParticipant(ParticipantDetail participant);
 
     ParticipantModel getParticipantByParticipantId(Long participantId);
 

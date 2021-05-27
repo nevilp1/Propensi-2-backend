@@ -7,6 +7,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import propensi.Pin.Insight.model.ParticipantModel;
+import propensi.Pin.Insight.repository.SurveyDb;
+import propensi.Pin.Insight.rest.ParticipantDetail;
 import propensi.Pin.Insight.service.ParticipantRestService;
 
 import javax.validation.Valid;
@@ -23,7 +25,7 @@ public class ParticipantRestController {
     ParticipantRestService participantRestService;
 
     @PostMapping(value="/participant/add")
-    private ParticipantModel createParticipant(@Valid @RequestBody ParticipantModel participant, BindingResult bindingResult){
+    private ParticipantModel createParticipant(@Valid @RequestBody ParticipantDetail participant, BindingResult bindingResult){
         if(bindingResult.hasFieldErrors()){
             bindingResult
                     .getFieldErrors()
