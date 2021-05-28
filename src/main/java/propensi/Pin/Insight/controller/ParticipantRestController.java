@@ -37,6 +37,17 @@ public class ParticipantRestController {
         }
     }
 
+    @GetMapping(value="/participant/list/{surveyId}")
+    private List<ParticipantModel> retrieveParticipantList(@PathVariable("surveyId") Long surveyId){
+        try{
+            return participantRestService.retrieveListParticipant(surveyId);
+        }catch (NoSuchElementException e){
+            throw  new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "Participant"+String.valueOf(surveyId)+" Not Found"
+            );
+        }
+    }
+
     @GetMapping(value="/participant/{participantId}")
     private ParticipantModel retrieveParticipant(@PathVariable("participantId") Long participantId){
         try{

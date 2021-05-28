@@ -5,7 +5,7 @@ import propensi.Pin.Insight.model.ParticipantModel;
 import java.util.List;
 
 public interface ParticipantRestService {
-    List<ParticipantModel> retrieveListParticipant();
+    List<ParticipantModel> retrieveListParticipant(Long surveyId);
 
     ParticipantModel createParticipant(ParticipantModel participant);
 
