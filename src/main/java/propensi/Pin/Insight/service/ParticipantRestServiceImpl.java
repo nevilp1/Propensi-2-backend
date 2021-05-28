@@ -25,8 +25,10 @@ public class ParticipantRestServiceImpl implements ParticipantRestService{
 
 
     @Override
-    public List<ParticipantModel> retrieveListParticipant() {
-        return null;
+    public List<ParticipantModel> retrieveListParticipant(Long surveyId) {
+        List<ParticipantModel> participantList = participantDb.findAll();
+        participantList.removeIf(participant -> participant.getSurvey().getId() != surveyId);
+        return participantList;
     }
 
     @Override
