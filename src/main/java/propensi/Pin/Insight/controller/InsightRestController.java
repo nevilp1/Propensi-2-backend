@@ -45,9 +45,13 @@ public class InsightRestController {
     @Autowired
     UserRestService userRestService;
 
-    @GetMapping("/insight-dashboard")
-    private InsightUserType getInsightByUserType() {
-        return insightRestService.getJumlahInsightByUserType();
+    @GetMapping("/insight-dashboard/{bulan}")
+    private InsightUserType getInsightByUserType(@PathVariable (value = "bulan") Long bulan) {
+        return insightRestService.getJumlahInsightByUserType(bulan);
+    }
+    @GetMapping("/insight-dashboard/")
+    private InsightUserType getInsightPerMonth(){
+        return insightRestService.getJumlahInsightPerBulan();
     }
 
     @GetMapping("/insights")

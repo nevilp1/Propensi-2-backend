@@ -15,6 +15,6 @@ import java.util.Optional;
 public interface RisetDb extends JpaRepository<RisetModel, Long> {
     Optional<RisetModel> findById(Long id);
     List<RisetModel> findAll();
-    @Query(value = "SELECT team, count(*) "+  "FROM riset group by id, team", nativeQuery = true)
-    List<RisetTeam> findTeam();
+    @Query(value = "SELECT team, count(team) "+  "FROM riset where extract(MONTH FROM research_date) = :research_date group by id, team;", nativeQuery = true)
+    List<RisetTeam> findTeam(Long research_date);
 }

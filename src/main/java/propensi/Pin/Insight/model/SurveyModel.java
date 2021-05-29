@@ -1,5 +1,6 @@
 package propensi.Pin.Insight.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -57,6 +58,7 @@ public class SurveyModel implements Serializable {
     private Date inputDate;
 
     @OneToMany(mappedBy = "survey", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ParticipantModel> listParticipant;
 
     public Long getId() {

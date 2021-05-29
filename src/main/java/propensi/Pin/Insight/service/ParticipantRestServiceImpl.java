@@ -3,7 +3,10 @@ package propensi.Pin.Insight.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import propensi.Pin.Insight.model.ParticipantModel;
+import propensi.Pin.Insight.model.SurveyModel;
 import propensi.Pin.Insight.repository.ParticipantDb;
+import propensi.Pin.Insight.repository.SurveyDb;
+import propensi.Pin.Insight.rest.ParticipantDetail;
 
 import javax.transaction.Transactional;
 import java.util.Date;
@@ -17,15 +20,31 @@ public class ParticipantRestServiceImpl implements ParticipantRestService{
     @Autowired
     ParticipantDb participantDb;
 
+    @Autowired
+    SurveyDb surveyDb;
+
 
     @Override
-    public List<ParticipantModel> retrieveListParticipant() {
-        return null;
+    public List<ParticipantModel> retrieveListParticipant(Long surveyId) {
+        List<ParticipantModel> participantList = participantDb.findAll();
+        participantList.removeIf(participant -> participant.getSurvey().getId() != surveyId);
+        return participantList;
     }
 
     @Override
-    public ParticipantModel createParticipant(ParticipantModel participant) {
-        return participantDb.save(participant);
+    public ParticipantModel createParticipant(ParticipantDetail participant) {
+        ParticipantModel temp = new ParticipantModel();
+        temp.setInputDate(new Date());
+        temp.setParticipantNotes(" ");
+        temp.setParticipantStatus(1);
+        SurveyModel s = surveyDb.findById(participant.getId()).get();
+        temp.setSurvey(s);
+        temp.setAge(participant.getAge());
+        temp.setParticipantName(participant.getParticipantName());
+        temp.setParticipantEmail(participant.getParticipantEmail());
+        temp.setDomicile(participant.getDomicile());
+        temp.setPhoneNumber(participant.getPhoneNumber());
+        return participantDb.save(temp);
     }
 
     @Override
