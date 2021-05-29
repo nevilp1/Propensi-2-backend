@@ -49,6 +49,10 @@ public class InsightRestController {
     private InsightUserType getInsightByUserType(@PathVariable (value = "bulan") Long bulan) {
         return insightRestService.getJumlahInsightByUserType(bulan);
     }
+    @GetMapping("/insight-dashboard/")
+    private InsightUserType getInsightPerMonth(){
+        return insightRestService.getJumlahInsightPerBulan();
+    }
 
     @GetMapping("/insights")
     private BaseResponse<List> getAllInsight() {

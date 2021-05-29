@@ -11,7 +11,7 @@ public class InsightUserType {
     private List<String> userType;
 
     @JsonProperty("jumlahInsight")
-    private List<Long> jumlahInsight;
+    private List<Integer> jumlahInsight;
 
     public List<String> getUserType() {
         return userType;
@@ -21,11 +21,11 @@ public class InsightUserType {
         this.userType = userType;
     }
 
-    public List<Long> getJumlahInsight() {
+    public List<Integer> getJumlahInsight() {
         return jumlahInsight;
     }
 
-    public void setJumlahInsight(List<Long> jumlahInsight) {
+    public void setJumlahInsight(List<Integer> jumlahInsight) {
         this.jumlahInsight = jumlahInsight;
     }
 }

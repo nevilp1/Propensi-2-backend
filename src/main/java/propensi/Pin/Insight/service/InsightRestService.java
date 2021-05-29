@@ -16,4 +16,5 @@ public interface InsightRestService {
     InsightModel archiveInsight(InsightModel insightModel);
     InsightUserType getJumlahInsightByUserType(Long bulan);
     InsightModel updateInsight(InsightModel insightModel);
+    InsightUserType getJumlahInsightPerBulan();
 }

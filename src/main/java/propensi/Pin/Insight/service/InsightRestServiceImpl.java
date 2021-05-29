@@ -39,21 +39,140 @@ public class InsightRestServiceImpl implements InsightRestService {
     ListArchetypeDb listArchetypeDb;
 
     @Override
-    public InsightUserType getJumlahInsightByUserType(Long bulan) {
-        List<UserTypeModel> listArchetype = archetypeDb.findAll();
-        InsightUserType temp = new InsightUserType();
-        List<String> listTypeName = new ArrayList<>();
-        List<Long> listJumlah = new ArrayList<>();
+    public InsightUserType getJumlahInsightPerBulan() {
+        List<String> listBulan = new ArrayList<>();
+        List<Integer> listJumlah = new ArrayList<>();
+        InsightUserType insightUserType = new InsightUserType();
 
-        for(UserTypeModel i : listArchetype) {
-            listTypeName.add(i.getTypeName());
-            Long jumlah = insightArchetypeDb.findAllByUserType(i).stream().count();
-            listJumlah.add(jumlah);
+        listBulan.add("January");
+        listBulan.add("February");
+        listBulan.add("March");
+        listBulan.add("April");
+        listBulan.add("May");
+        listBulan.add("June");
+        listBulan.add("July");
+        listBulan.add("August");
+        listBulan.add("September");
+        listBulan.add("October");
+        listBulan.add("November");
+        listBulan.add("December");
+
+        insightUserType.setUserType(listBulan);
+        List<InsightModel> insightModels = insightDb.findAll();
+
+        //initialize
+        Integer jan, feb, march, april, may, june, july, august, sep, oct, nov, dec;
+        jan = feb = march = april = may = june = july = august = sep = oct = nov= dec = 0;
+
+        for(InsightModel i : insightModels){
+            switch(i.getInputDate().getMonth()) {
+                case 0:
+                    jan++;
+                    break;
+                case 1:
+                    feb++;
+                    break;
+                case 2:
+                    march++;
+                    break;
+                case 3:
+                    april++;
+                    break;
+                case 4:
+                    may++;
+                    break;
+                case 5:
+                    june++;
+                    break;
+                case 6:
+                    july++;
+                    break;
+                case 7:
+                    august++;
+                    break;
+                case 8:
+                    sep++;
+                    break;
+                case 9:
+                    oct++;
+                    break;
+                case 10:
+                    nov++;
+                    break;
+                case 11:
+                    dec++;
+                    break;
+
+            }
+
         }
-        temp.setJumlahInsight(listJumlah);
-        temp.setUserType(listTypeName);
+        listJumlah.add(jan);
+        listJumlah.add(feb);
+        listJumlah.add(march);
+        listJumlah.add(april);
+        listJumlah.add(may);
+        listJumlah.add(june);
+        listJumlah.add(july);
+        listJumlah.add(august);
+        listJumlah.add(sep);
+        listJumlah.add(oct);
+        listJumlah.add(nov);
+        listJumlah.add(dec);
+        insightUserType.setJumlahInsight(listJumlah);
 
+        return insightUserType;
+    }
+
+    @Override
+    public InsightUserType getJumlahInsightByUserType(Long bulan) {
+        InsightUserType temp = new InsightUserType();
+        List<UserTypeModel> listArchetype = archetypeDb.findAll();
+
+        HashMap<String, List<InsightModel>> map = new HashMap<>();
+        for(UserTypeModel u : listArchetype){
+            map.put(u.getTypeName(), new ArrayList<InsightModel>());
+        }
+        List<InsightModel> insightModels = insightDb.findAll();
+        for(InsightModel i : insightModels){
+            System.out.println("TEST3" + i.getInputDate().getMonth());
+            if((i.getInputDate().getMonth() + 1) != bulan){
+//                insightModels.remove(i);
+            }else{
+                Integer counter = i.getInsightArchetypeModels().size();
+                for(int j = 0; j< counter; j++) {
+                    System.out.println("TEST1" + i.getInsightPicName());
+                    List<InsightModel> list2 = map.get(i.getInsightArchetypeModels().get(j).getUserType().getTypeName());
+                    list2.add(i);
+                    System.out.println("TEST2" + list2.get(0));
+                    map.replace((i.getInsightArchetypeModels().get(j).getUserType().getTypeName()), list2);
+                }
+            }
+        }
+        List<String> listNama = new ArrayList<>();
+        List<Integer> listJumlah = new ArrayList<>();
+
+        for(UserTypeModel u : listArchetype){
+            listNama.add(u.getTypeName());
+            listJumlah.add(map.get(u.getTypeName()).size() );
+        }
+
+        temp.setUserType(listNama);
+        temp.setJumlahInsight(listJumlah);
         return temp;
+//        List<UserTypeModel> listArchetype = archetypeDb.findAll();
+//        InsightUserType temp = new InsightUserType();
+//        List<String> listTypeName = new ArrayList<>();
+//        List<Long> listJumlah = new ArrayList<>();
+//
+//        for(UserTypeModel i : listArchetype) {
+//            listTypeName.add(i.getTypeName());
+//            Long jumlah = insightArchetypeDb.findAllByUserType(i).stream().count();
+//            listJumlah.add(jumlah);
+//        }
+//        temp.setJumlahInsight(listJumlah);
+//        temp.setUserType(listTypeName);
+//
+//        return temp;
     }
 
     @Override
