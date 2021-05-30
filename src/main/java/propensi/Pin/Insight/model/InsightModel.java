@@ -61,7 +61,6 @@ public class InsightModel implements Serializable {
 
     @OneToMany(mappedBy = "insightModel", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private List<InsightArchetypeModel> insightArchetypeModels;
 
     @OneToMany(mappedBy = "insightModel", fetch = FetchType.LAZY)

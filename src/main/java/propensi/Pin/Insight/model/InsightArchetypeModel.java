@@ -24,7 +24,6 @@ public class InsightArchetypeModel implements Serializable {
     @ManyToOne(fetch = FetchType.EAGER, optional = true)
     @JoinColumn(name = "id_userType", referencedColumnName = "id", nullable = true)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private UserTypeModel userType;
 
     public Long getId() {
