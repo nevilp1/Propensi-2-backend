@@ -201,7 +201,6 @@ public class RisetController {
         newInsight.setInputDate(timestamp);
         newInsight.setInsightPicName(target.getPic());
         newInsight.setInsightTeamName(target.getTeam());
-        newInsight.setNote("testDoangNih");
         newInsight.setInsightStatement(risetaddInsight.getInsightStatement());
         newInsight.setStatus(true);
         newInsight.setRisetInsight(target);

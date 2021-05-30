@@ -17,4 +17,5 @@ public interface InsightRestService {
     InsightUserType getJumlahInsightByUserType(Long bulan);
     InsightModel updateInsight(InsightModel insightModel);
     InsightUserType getJumlahInsightPerBulan();
+    List<RisetModel> getAllRiset();
 }

@@ -61,8 +61,20 @@ public class InsightRestController {
     }
 
     @GetMapping("/insightRisetList")
-    private List<Map<String, Object>> retriveListRiset() {
-        return risetService.insightRisetList();
+    private List<RisetDetail> retriveListRiset() {
+        List<RisetModel> listRiset = insightRestService.getAllRiset();
+        List<RisetDetail> data = new ArrayList<>();
+        for (RisetModel riset:
+                listRiset) {
+            RisetDetail detail = new RisetDetail();
+            List<Integer> archtype = new ArrayList<>();
+            riset.getListArchetypeModel().forEach(i -> archtype.add(i.getUserType().getId()));
+            detail.setArchetype(archtype);
+            detail.setId(Math.toIntExact(riset.getId()));
+            detail.setResearchTitle(riset.getResearchTitle());
+            data.add(detail);
+        }
+        return data;
     }
 
     @GetMapping("/insight/detail/{id}")
@@ -83,7 +95,6 @@ public class InsightRestController {
             insightDetail.setListArchetype(list);
 //            insightDetail.setArchetype(insightModel.get().getTypeInsight().getType());
             insightDetail.setInsightTeamName(insightModel.get().getInsightTeamName());
-            insightDetail.setNote(insightModel.get().getNote());
 //            insightDetail.setRiset(insightModel.get().getRiset().getResearchTitle());
             insightDetail.setStatus(insightModel.get().getStatus());
             List<KomentarModel> insightKomentar = insightModel.get().getInsightCommentModels();
@@ -115,7 +126,6 @@ public class InsightRestController {
             dbData.setInsightPicName(insightModel.getInsightPicName());
             dbData.setInsightTeamName(insightModel.getInsightTeamName());
             dbData.setIdRiset(Math.toIntExact(insightModel.getRisetInsight().getId()));
-            dbData.setNote(insightModel.getNote());
             dbData.setInsightStatement(insightModel.getInsightStatement());
 
             for (InsightArchetypeModel i :
@@ -162,7 +172,6 @@ public class InsightRestController {
             insightModel.setInputDate(timestamp);
             insightModel.setInsightPicName(pic);
             insightModel.setInsightTeamName(team);
-            insightModel.setNote(note);
             insightModel.setInsightStatement(insightStatement);
             insightModel.setStatus(status);
             insightModel.setRisetInsight(riset);
@@ -188,46 +197,48 @@ public class InsightRestController {
         }
     }
 
+
     @PostMapping(value = "/insight/create")
     private Object createInsight(@RequestBody InsightDetailCreate postData) {
-        InsightModel insightModel = new InsightModel();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        String pic = postData.getInsightPicName();
-        String team = postData.getInsightTeamName();
-        String note = postData.getNote();
-        String insightStatement = postData.getInsightStatement();
-        Integer idRiset = postData.getIdRiset();
-        Integer idUser = postData.getIdUser();
-        Boolean status = postData.getStatus();
-
         System.out.println(postData.toString());
-        System.out.println(idRiset);
-        System.out.println(status);
+        for (String insightValue:
+                postData.getInsightList()) {
+            InsightModel insightModel = new InsightModel();
+            Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+            String pic = postData.getInsightPicName();
+            String team = postData.getInsightTeamName();
+            Integer idRiset = postData.getIdRiset();
+            Integer idUser = postData.getIdUser();
+            Boolean status = postData.getStatus();
 
-        RisetModel riset = risetService.getRisetById(Long.valueOf(idRiset)).get();
-        UserModel user = userRestService.getUser(Long.valueOf(idUser)).get();
+            System.out.println(postData.toString());
+            System.out.println(idRiset);
+            System.out.println(status);
 
-        insightModel.setInputDate(timestamp);
-        insightModel.setInsightPicName(pic);
-        insightModel.setInsightTeamName(team);
-        insightModel.setNote(note);
-        insightModel.setInsightStatement(insightStatement);
-        insightModel.setStatus(status);
-        insightModel.setRisetInsight(riset);
-        insightModel.setUser(user);
-        InsightModel savedData = insightRestService.createInsight(insightModel);
+            RisetModel riset = risetService.getRisetById(Long.valueOf(idRiset)).get();
+            UserModel user = userRestService.getUser(Long.valueOf(idUser)).get();
 
-        // Add multiple archtype to the database
-        // use for loop to save each archtype id to insightArchtype that save the records of multiple archtype
-        for (Integer i :
-                postData.getArchetype()) {
-            UserTypeModel userTypeArchtype = archetypeService.findById(i).get();
-            InsightArchetypeModel insightArchetypeModel = new InsightArchetypeModel();
-            insightArchetypeModel.setInsightModel(savedData);
-            insightArchetypeModel.setUserType(userTypeArchtype);
-            insightArchetypeService.addListArchetype(insightArchetypeModel);
+            insightModel.setInputDate(timestamp);
+            insightModel.setInsightPicName(pic);
+            insightModel.setInsightTeamName(team);
+            insightModel.setInsightStatement(insightValue);
+            insightModel.setStatus(status);
+            insightModel.setRisetInsight(riset);
+            insightModel.setUser(user);
+            InsightModel savedData = insightRestService.createInsight(insightModel);
+
+            // Add multiple archtype to the database
+            // use for loop to save each archtype id to insightArchtype that save the records of multiple archtype
+            for (Integer i :
+                    postData.getArchetype()) {
+                UserTypeModel userTypeArchtype = archetypeService.findById(i).get();
+                InsightArchetypeModel insightArchetypeModel = new InsightArchetypeModel();
+                insightArchetypeModel.setInsightModel(savedData);
+                insightArchetypeModel.setUserType(userTypeArchtype);
+                insightArchetypeService.addListArchetype(insightArchetypeModel);
+            }
         }
-        return new BaseResponse<>(200, "Data has been updated", insightModel);
+        return new BaseResponse<>(200, "Data has been updated", null);
     }
 
     @GetMapping("/komentars")

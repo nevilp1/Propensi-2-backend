@@ -198,7 +198,6 @@ public class InsightRestServiceImpl implements InsightRestService {
                 insight.setInsightPicName(k.getInsightPicName());
                 insight.setListArchetype(listArchetype);
                 insight.setInsightTeamName(k.getInsightTeamName());
-                insight.setNote(k.getNote());
                 insight.setRiset(k.getRisetInsight().getResearchTitle());
                 insight.setStatus(k.getStatus());
                 insightDetails.add(insight);
@@ -233,6 +232,11 @@ public class InsightRestServiceImpl implements InsightRestService {
     public InsightModel updateInsight(InsightModel insightModel) {
         insightDb.save(insightModel);
         return insightModel;
+    }
+
+    @Override
+    public List<RisetModel> getAllRiset() {
+        return risetDb.findAll();
     }
 
 }

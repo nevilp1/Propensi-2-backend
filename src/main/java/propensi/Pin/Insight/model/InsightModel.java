@@ -42,10 +42,6 @@ public class InsightModel implements Serializable {
     @Column(name = "status", nullable = false)
     private Boolean status;
 
-    @NotNull
-    @Column(name = "note", nullable = false)
-    private String note;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_user", referencedColumnName = "id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -78,7 +74,6 @@ public class InsightModel implements Serializable {
                 ", insightTeamName='" + insightTeamName + '\'' +
                 ", inputDate=" + inputDate +
                 ", status=" + status +
-                ", note='" + note + '\'' +
                 ", user=" + user +
                 ", risetInsight=" + risetInsight +
                 ", insightArchetypeModels=" + insightArchetypeModels +
@@ -141,14 +136,6 @@ public class InsightModel implements Serializable {
         this.status = status;
     }
 
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
-    }
-
     public UserModel getUser() {
         return user;
     }
@@ -172,125 +159,4 @@ public class InsightModel implements Serializable {
     public void setInsightArchetypeModels(List<InsightArchetypeModel> insightArchetypeModels) {
         this.insightArchetypeModels = insightArchetypeModels;
     }
-
-    //    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "id_trashbin", referencedColumnName = "id", nullable = false)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonIgnore
-//    private TrashBinModel trashbin;
-
-//    @OneToMany(mappedBy = "insight", fetch = FetchType.LAZY)
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @JsonIgnore
-//    private List<KomentarModel> komentarModelList;
-//
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
-//
-//    public String getInsightStatement() {
-//        return insightStatement;
-//    }
-//
-//    public void setInsightStatement(String insightStatement) {
-//        this.insightStatement = insightStatement;
-//    }
-//
-//    public RisetModel getRiset() {
-//        return risetInsight;
-//    }
-//
-//    public void setRiset(RisetModel riset) {
-//        this.risetInsight = riset;
-//    }
-//
-//    public String getInsightPicName() {
-//        return insightPicName;
-//    }
-//
-//    public void setInsightPicName(String insightPicName) {
-//        this.insightPicName = insightPicName;
-//    }
-//
-//    public String getInsightTeamName() {
-//        return insightTeamName;
-//    }
-//
-//    public void setInsightTeamName(String insightTeamName) {
-//        this.insightTeamName = insightTeamName;
-//    }
-//
-//    public Date getInputDate() {
-//        return inputDate;
-//    }
-//
-//    public void setInputDate(Date inputDate) {
-//        this.inputDate = inputDate;
-//    }
-//
-//    public Boolean getStatus() {
-//        return status;
-//    }
-//
-//    public void setStatus(Boolean status) {
-//        this.status = status;
-//    }
-//
-//    public String getNote() {
-//        return note;
-//    }
-//
-//    public void setNote(String note) {
-//        this.note = note;
-//    }
-//
-//    public UserModel getUser() {
-//        return user;
-//    }
-//
-//    public void setUser(UserModel user) {
-//        this.user = user;
-//    }
-//
-////    public List<KomentarModel> getKomentarModelList() {
-////        return komentarModelList;
-////    }
-////
-////    public void setKomentarModelList(List<KomentarModel> komentarModelList) {
-////        this.komentarModelList = komentarModelList;
-////    }
-//
-////
-////    public ArchetypeModel getTypeInsight() {
-////        return typeInsight;
-////    }
-////
-////    public void setTypeInsight(ArchetypeModel typeInsight) {
-////        this.typeInsight = typeInsight;
-////    }
-//
-//    public TrashBinModel getTrashbin() {
-//        return trashbin;
-//    }
-//
-//    public void setTrashbin(TrashBinModel trashbin) {
-//        this.trashbin = trashbin;
-//    }
-//
-////    public void setAll(Date date, String pic, String team, String note, String insight, RisetModel riset, boolean status, UserModel user, TrashBinModel trashbin, ArchetypeModel archtype) {
-////        this.inputDate = date;
-////        this.insightPicName = pic;
-////        this.insightTeamName = team;
-////        this.note = note;
-////        this.insightStatement = insight;
-////        this.risetInsight = riset;
-////        this.status = status;
-////        this.user = user;
-////        this.trashbin = trashbin;
-////        this.typeInsight = archtype;
-////    }
 }
