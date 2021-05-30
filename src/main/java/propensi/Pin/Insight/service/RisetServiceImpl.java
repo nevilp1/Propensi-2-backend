@@ -7,7 +7,9 @@ import propensi.Pin.Insight.model.ListArchetypeModel;
 import propensi.Pin.Insight.model.RisetModel;
 import propensi.Pin.Insight.model.UserTypeModel;
 import propensi.Pin.Insight.repository.RisetDb;
+import propensi.Pin.Insight.repository.RisetTeam;
 import propensi.Pin.Insight.repository.UserDb;
+import propensi.Pin.Insight.rest.TeamDetail;
 
 import javax.transaction.Transactional;
 import java.text.DateFormat;
@@ -32,6 +34,24 @@ public class RisetServiceImpl implements RisetService{
     @Override
     public void addRiset(RisetModel add) {
         risetDb.save(add);
+    }
+
+    @Override
+    public TeamDetail listTeam(Long bulan) {
+        List<RisetTeam> listTeam = risetDb.findTeam(bulan);
+        List<String> listTim = new ArrayList<>();
+        List<Long> listJumlah = new ArrayList<>();
+        TeamDetail resp = new TeamDetail();
+
+        for(RisetTeam i : listTeam){
+            listTim.add(i.getTeam());
+            listJumlah.add(i.getCount());
+        }
+
+        resp.setJumlahRiset(listJumlah);
+        resp.setNamaTim(listTim);
+
+        return resp;
     }
 
     @Override
@@ -77,9 +97,11 @@ public class RisetServiceImpl implements RisetService{
     }
 
     @Override
-    public List<Map<String, Object>> listInsightByIDRiset(Long id) {
+    public List<Map<String, Object>> listInsightByIDRiset(Long id, Boolean status) {
         List<Map<String,Object>> list = new ArrayList<>();
         Optional<RisetModel> targetRiset = risetDb.findById(id);
+
+        System.out.println(status);
 
         List<InsightModel> insightID  = targetRiset.get().getInsightModels();
 
@@ -87,7 +109,7 @@ public class RisetServiceImpl implements RisetService{
         for (int i = 0; i < insightID.size(); i++) {
             List<UserTypeModel> listArchetypeInsight = new ArrayList<>();
             HashMap<String,Object> insightTarget = new HashMap<>();
-            if (insightID.get(i).getStatus() == true) {
+            if (insightID.get(i).getStatus() == status) {
                 for (int j = 0; j < insightID.get(i).getInsightArchetypeModels().size(); j++) {
                     listArchetypeInsight.add(insightID.get(i).getInsightArchetypeModels().get(j).getUserType());
                 }
