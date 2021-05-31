@@ -122,7 +122,6 @@ public class TrashBinRestController {
             insightDetail.setListArchetype(list);
 //            insightDetail.setArchetype(insightModel.get().getTypeInsight().getType());
             insightDetail.setInsightTeamName(insightModel.get().getInsightTeamName());
-            insightDetail.setNote(insightModel.get().getNote());
 //            insightDetail.setRiset(insightModel.get().getRiset().getResearchTitle());
             insightDetail.setStatus(insightModel.get().getStatus());
             List<KomentarModel> insightKomentar = insightModel.get().getInsightCommentModels();

@@ -75,7 +75,6 @@ public class RisetModel implements Serializable {
 
     @OneToMany(mappedBy = "risetInsight", fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private List<InsightModel> insightModels;
 
     public Long getId() {

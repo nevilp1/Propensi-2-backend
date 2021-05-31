@@ -43,22 +43,19 @@ public class InsightDetailCreate {
         return archetype;
     }
 
+    @JsonProperty("insightList")
+    private List<String> insightList;
+
     public void setArchetype(List<Integer> archetype) {
         this.archetype = archetype;
     }
 
-    @Override
-    public String toString() {
-        return "InsightDetailCreate{" +
-                "insightPicName='" + insightPicName + '\'' +
-                ", insightTeamName='" + insightTeamName + '\'' +
-                ", note='" + note + '\'' +
-                ", insightStatement='" + insightStatement + '\'' +
-                ", idRiset=" + idRiset +
-                ", idUser=" + idUser +
-                ", status=" + status +
-                ", archetype=" + archetype +
-                '}';
+    public List<String> getInsightList() {
+        return insightList;
+    }
+
+    public void setInsightList(List<String> insightList) {
+        this.insightList = insightList;
     }
 
     public List<Integer> getUserTypeModels() {
@@ -124,5 +121,21 @@ public class InsightDetailCreate {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "InsightDetailCreate{" +
+                "insightPicName='" + insightPicName + '\'' +
+                ", insightTeamName='" + insightTeamName + '\'' +
+                ", note='" + note + '\'' +
+                ", insightStatement='" + insightStatement + '\'' +
+                ", idRiset=" + idRiset +
+                ", idUser=" + idUser +
+                ", status=" + status +
+                ", archetype=" + archetype +
+                ", userTypeModels=" + userTypeModels +
+                ", insightList=" + insightList +
+                '}';
     }
 }

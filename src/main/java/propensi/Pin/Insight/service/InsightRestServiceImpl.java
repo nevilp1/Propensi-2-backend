@@ -58,7 +58,8 @@ public class InsightRestServiceImpl implements InsightRestService {
         listBulan.add("December");
 
         insightUserType.setUserType(listBulan);
-        List<InsightModel> insightModels = insightDb.findAll();
+        Date d = new Date();
+        List<InsightModel> insightModels = insightDb.findInsightByYear(Long.valueOf(d.getYear() + 1900));
 
         //initialize
         Integer jan, feb, march, april, may, june, july, august, sep, oct, nov, dec;
@@ -198,7 +199,6 @@ public class InsightRestServiceImpl implements InsightRestService {
                 insight.setInsightPicName(k.getInsightPicName());
                 insight.setListArchetype(listArchetype);
                 insight.setInsightTeamName(k.getInsightTeamName());
-                insight.setNote(k.getNote());
                 insight.setRiset(k.getRisetInsight().getResearchTitle());
                 insight.setStatus(k.getStatus());
                 insightDetails.add(insight);
@@ -233,6 +233,11 @@ public class InsightRestServiceImpl implements InsightRestService {
     public InsightModel updateInsight(InsightModel insightModel) {
         insightDb.save(insightModel);
         return insightModel;
+    }
+
+    @Override
+    public List<RisetModel> getAllRiset() {
+        return risetDb.findAll();
     }
 
 }

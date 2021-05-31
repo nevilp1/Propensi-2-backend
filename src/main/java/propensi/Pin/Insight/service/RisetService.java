@@ -21,4 +21,5 @@ public interface RisetService {
     void archiveRiset(Long id);
     Long count();
     TeamDetail listTeam(Long bulan);
+    List<RisetModel> getRisetByMonth(Long bulan);
 }

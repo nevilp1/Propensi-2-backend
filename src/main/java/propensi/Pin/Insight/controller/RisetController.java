@@ -50,6 +50,11 @@ public class RisetController {
         System.out.println(risetService.count());
         return risetService.count();
     }
+    @GetMapping("/riset-dashboard/{bulan}")
+    private List<RisetModel> RisetByMonth(@PathVariable (value = "bulan") Long bulan){
+        return risetService.getRisetByMonth(bulan);
+    }
+
     @GetMapping("/risetTeam/{bulan}")
     private TeamDetail risetTeam(@PathVariable (value = "bulan") Long bulan){
         return risetService.listTeam(bulan);
@@ -201,7 +206,6 @@ public class RisetController {
         newInsight.setInputDate(timestamp);
         newInsight.setInsightPicName(target.getPic());
         newInsight.setInsightTeamName(target.getTeam());
-        newInsight.setNote("testDoangNih");
         newInsight.setInsightStatement(risetaddInsight.getInsightStatement());
         newInsight.setStatus(true);
         newInsight.setRisetInsight(target);

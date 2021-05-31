@@ -9,6 +9,10 @@ import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RisetDetail {
+
+    @JsonProperty("id")
+    private Integer id;
+
     @JsonProperty("currentUser")
     private String currentUser;
 
@@ -106,5 +110,13 @@ public class RisetDetail {
 
     public void setArchetype(List<Integer> archetype) {
         this.archetype = archetype;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

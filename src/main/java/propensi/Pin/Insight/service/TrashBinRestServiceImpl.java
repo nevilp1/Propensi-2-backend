@@ -147,7 +147,6 @@ public class TrashBinRestServiceImpl implements TrashBinRestService {
                 insight.setInsightPicName(k.getInsightPicName());
                 insight.setListArchetype(listArchetype);
                 insight.setInsightTeamName(k.getInsightTeamName());
-                insight.setNote(k.getNote());
                 insight.setRiset(k.getRisetInsight().getResearchTitle());
                 insight.setStatus(k.getStatus());
                 insightDetails.add(insight);
