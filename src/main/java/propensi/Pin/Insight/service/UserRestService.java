@@ -4,11 +4,7 @@ import propensi.Pin.Insight.model.InsightModel;
 import propensi.Pin.Insight.model.RisetModel;
 import propensi.Pin.Insight.model.UserModel;
 
-import java.util.Optional;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public interface UserRestService {
     List<Map<String, Object>> listUser();
@@ -16,6 +12,9 @@ public interface UserRestService {
 //    void addUser(UserModel add);
     UserModel archiveUser(UserModel userModel);
     HashMap<String, Object> getUserById(Long id);
+
+    Set<String> listTeam();
+    Set<String> listPIC();
 
     void deleteUser(Long id);
 

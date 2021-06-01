@@ -56,4 +56,10 @@ public class UserRestController {
             return new BaseResponse<>(500, "Internal Server error", null);
         }
     }
+
+    @GetMapping("/user/team")
+    private Set<String> retrieveListTeam() {return userRestService.listTeam(); }
+
+    @GetMapping("/user/pic")
+    private Set<String> retrieveListPic() {return userRestService.listPIC();}
 }

@@ -36,7 +36,7 @@ public class ParticipantRestServiceImpl implements ParticipantRestService{
         ParticipantModel temp = new ParticipantModel();
         temp.setInputDate(new Date());
         temp.setParticipantNotes(" ");
-        temp.setParticipantStatus(1);
+        temp.setParticipantStatus("New");
         SurveyModel s = surveyDb.findById(participant.getId()).get();
         temp.setSurvey(s);
         temp.setAge(participant.getAge());
