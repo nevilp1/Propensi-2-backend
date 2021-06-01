@@ -91,4 +91,28 @@ public class UserRestServiceImpl implements UserRestService{
             throw new NoSuchElementException();
         }
     }
+
+    @Override
+    public Set<String> listTeam() {
+        List<UserModel> listUser = userDb.findAll();
+        Set<String> listTeam = new HashSet<>();
+
+        for (int i = 0; i < listUser.size() ; i++) {
+            listTeam.add(listUser.get(i).getTeam());
+        }
+        return listTeam;
+    }
+
+    @Override
+    public Set<String> listPIC() {
+        List<UserModel> listUser = userDb.findAll();
+        Set<String> listPic = new HashSet<>();
+
+        for (int i = 0; i < listUser.size() ; i++) {
+            String role = listUser.get(i).getRoles().toString();
+            System.out.println(role);
+            listPic.add(listUser.get(i).getUsername());
+        }
+        return listPic;
+    }
 }

@@ -3,6 +3,8 @@ package propensi.Pin.Insight.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import propensi.Pin.Insight.model.SurveyModel;
+import propensi.Pin.Insight.model.ParticipantModel;
+import propensi.Pin.Insight.repository.ParticipantDb;
 import propensi.Pin.Insight.repository.SurveyDb;
 
 import javax.transaction.Transactional;
@@ -16,6 +18,9 @@ import java.util.Optional;
 public class SurveyRestServiceImpl implements SurveyRestService{
     @Autowired
     SurveyDb surveyDb;
+
+    @Autowired
+    ParticipantDb participantDb;
 
     @Override
     public List<SurveyModel> retrieveListSurvey() {
@@ -62,6 +67,12 @@ public class SurveyRestServiceImpl implements SurveyRestService{
     @Override
     public void deleteSurvey(Long surveyId) {
         SurveyModel survey = getSurveyBySurveyId(surveyId);
+        List<ParticipantModel> participantList = participantDb.findAll();
+        for (ParticipantModel participant : participantList){
+            if (participant.getSurvey().getId() == surveyId){
+                participantDb.delete(participant);
+            }
+        }
         surveyDb.delete(survey);
     }
 
