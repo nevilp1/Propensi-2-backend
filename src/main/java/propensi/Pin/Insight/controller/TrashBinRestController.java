@@ -84,25 +84,12 @@ public class TrashBinRestController {
         }
     }
 
-//    @GetMapping("/trashBin/insight1")
-//    private List<Map<String, Object>> retrieveTrashBinInsight() {return trashBinRestService.listInsight();}
-
     @GetMapping("/trashBin/insight")
     private BaseResponse<List> getAllInsight() {
         List<InsightDetail> insightList = trashBinRestService.getAllInsight();
         return new BaseResponse<>(200, "Insights data retrived", insightList);
     }
 
-//    @GetMapping(value = "/trashBin/insight/{id}")
-//    private HashMap<String,Object> retrieveInsight (@PathVariable (value = "id") Long id){
-//        try {
-//            return trashBinRestService.getInsightByIdInsight(id);
-//        }catch (NoSuchElementException e){
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, "Insight with ID " + String.valueOf(id) + " doesn't exist!"
-//            );
-//        }
-//    }
 
     @GetMapping(value = "/trashBin/insight/{id}")
     private Object getInsight(@PathVariable(value = "id") Long id) {
