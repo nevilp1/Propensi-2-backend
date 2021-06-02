@@ -38,9 +38,9 @@ public class ParticipantModel implements Serializable {
 
     @NotNull
     @Column(name="participantStatus", nullable = false)
-    private Integer participantStatus;
+    private String participantStatus;
 
-    @NotNull
+//    @NotNull
     @Column(name="participantNotes")
     private String participantNotes;
 
@@ -103,11 +103,11 @@ public class ParticipantModel implements Serializable {
         this.domicile = domicile;
     }
 
-    public Integer getParticipantStatus() {
+    public String getParticipantStatus() {
         return participantStatus;
     }
 
-    public void setParticipantStatus(Integer participantStatus) {
+    public void setParticipantStatus(String participantStatus) {
         this.participantStatus = participantStatus;
     }
 
