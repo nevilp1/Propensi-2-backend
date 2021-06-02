@@ -197,4 +197,6 @@ public class RisetServiceImpl implements RisetService{
         RisetModel target = risetDb.findById(id).get();
         target.setStatus(false);
     }
+
+
 }

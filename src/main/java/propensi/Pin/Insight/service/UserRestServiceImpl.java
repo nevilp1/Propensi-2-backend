@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import propensi.Pin.Insight.model.*;
 import propensi.Pin.Insight.repository.UserDb;
 
+import javax.management.relation.Role;
 import javax.transaction.Transactional;
 
 import java.util.*;
@@ -81,6 +82,7 @@ public class UserRestServiceImpl implements UserRestService{
         }
     }
 
+
     @Override
     public void deleteUser(Long id) {
         Optional<UserModel> user = userDb.findById(id);
@@ -91,6 +93,7 @@ public class UserRestServiceImpl implements UserRestService{
             throw new NoSuchElementException();
         }
     }
+
 
     @Override
     public Set<String> listTeam() {
@@ -115,4 +118,5 @@ public class UserRestServiceImpl implements UserRestService{
         }
         return listPic;
     }
+
 }

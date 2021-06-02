@@ -12,7 +12,6 @@ public interface UserRestService {
 //    void addUser(UserModel add);
     UserModel archiveUser(UserModel userModel);
     HashMap<String, Object> getUserById(Long id);
-
     Set<String> listTeam();
     Set<String> listPIC();
 

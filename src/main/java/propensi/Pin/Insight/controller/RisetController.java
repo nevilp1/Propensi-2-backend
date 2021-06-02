@@ -211,6 +211,8 @@ public class RisetController {
         newInsight.setRisetInsight(target);
         newInsight.setUser(user);
         InsightModel saveData = insightRestService.createInsight(newInsight);
+        int tambahJumlahInsight = target.getInsight_amount()+1;
+        target.setInsight_amount(tambahJumlahInsight);
 
         for (int i = 0; i < risetaddInsight.getArchetype().size() ; i++) {
             InsightArchetypeModel insightArchetypeModel = new InsightArchetypeModel();
