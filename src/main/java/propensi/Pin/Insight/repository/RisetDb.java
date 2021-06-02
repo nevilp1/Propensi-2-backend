@@ -21,4 +21,6 @@ public interface RisetDb extends JpaRepository<RisetModel, Long> {
 
     @Query(value = "SELECT * FROM riset where extract(MONTH FROM input_date) = :bulan", nativeQuery = true)
     List<RisetModel> findRisetByMonth(Long bulan);
+
+    List<RisetModel> findAllByStatusIsTrue();
 }
