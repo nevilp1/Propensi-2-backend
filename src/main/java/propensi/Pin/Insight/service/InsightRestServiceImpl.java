@@ -58,8 +58,7 @@ public class InsightRestServiceImpl implements InsightRestService {
         listBulan.add("December");
 
         insightUserType.setUserType(listBulan);
-        Date d = new Date();
-        List<InsightModel> insightModels = insightDb.findInsightByYear(Long.valueOf(d.getYear() + 1900));
+        List<InsightModel> insightModels = insightDb.findAll();
 
         //initialize
         Integer jan, feb, march, april, may, june, july, august, sep, oct, nov, dec;
@@ -199,7 +198,11 @@ public class InsightRestServiceImpl implements InsightRestService {
                 insight.setInsightPicName(k.getInsightPicName());
                 insight.setListArchetype(listArchetype);
                 insight.setInsightTeamName(k.getInsightTeamName());
-                insight.setRiset(k.getRisetInsight().getResearchTitle());
+                try {
+                    insight.setRiset(k.getRisetInsight().getResearchTitle());
+                } catch (NullPointerException e){
+                    System.out.println("null pointer reached");
+                }
                 insight.setStatus(k.getStatus());
                 insightDetails.add(insight);
             }
