@@ -230,6 +230,9 @@ public class InsightRestController {
             try{
                 RisetModel riset = risetService.getRisetById(Long.valueOf(idRiset)).get();
                 insightModel.setRisetInsight(riset);
+                // this for add insight amount of riset
+                int tambahJumlahInsight = riset.getInsight_amount()+1;
+                riset.setInsight_amount(tambahJumlahInsight);
             }catch (NullPointerException e){
                 System.out.println("this is empty");;
             }
@@ -245,9 +248,6 @@ public class InsightRestController {
             insightModel.setUser(user);
             InsightModel savedData = insightRestService.createInsight(insightModel);
 
-            // this for add insight amount of riset
-            int tambahJumlahInsight = riset.getInsight_amount()+1;
-            riset.setInsight_amount(tambahJumlahInsight);
 
             // Add multiple archtype to the database
             // use for loop to save each archtype id to insightArchtype that save the records of multiple archtype
