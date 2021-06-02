@@ -99,6 +99,8 @@ public class InsightRestController {
             insightDetail.setInsightStatement(insightModel.get().getInsightStatement());
             insightDetail.setInsightPicName(insightModel.get().getInsightPicName());
             insightDetail.setListArchetype(list);
+            insightDetail.setUsername(insightModel.get().getUser().getUsername());
+            System.out.println(insightModel.get().getUser().getUsername());
             insightDetail.setInsightTeamName(insightModel.get().getInsightTeamName());
             insightDetail.setStatus(insightModel.get().getStatus());
             List<KomentarModel> insightKomentar = insightModel.get().getInsightCommentModels();

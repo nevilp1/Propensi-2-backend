@@ -4,16 +4,21 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import propensi.Pin.Insight.model.InsightArchetypeModel;
 import propensi.Pin.Insight.model.KomentarModel;
+import propensi.Pin.Insight.model.RoleModel;
 import propensi.Pin.Insight.model.UserTypeModel;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class InsightDetail {
 
     @JsonProperty("id")
     private Long id;
+
+    @JsonProperty("username")
+    private String username;
 
     @JsonProperty("inputDate")
     private Date inputDate;
@@ -41,6 +46,15 @@ public class InsightDetail {
 
     @JsonProperty("listKomentar")
     private List<KomentarDetail> listKomentar;
+
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Long getId() {
         return id;

@@ -159,20 +159,6 @@ public class InsightRestServiceImpl implements InsightRestService {
         temp.setUserType(listNama);
         temp.setJumlahInsight(listJumlah);
         return temp;
-//        List<UserTypeModel> listArchetype = archetypeDb.findAll();
-//        InsightUserType temp = new InsightUserType();
-//        List<String> listTypeName = new ArrayList<>();
-//        List<Long> listJumlah = new ArrayList<>();
-//
-//        for(UserTypeModel i : listArchetype) {
-//            listTypeName.add(i.getTypeName());
-//            Long jumlah = insightArchetypeDb.findAllByUserType(i).stream().count();
-//            listJumlah.add(jumlah);
-//        }
-//        temp.setJumlahInsight(listJumlah);
-//        temp.setUserType(listTypeName);
-//
-//        return temp;
     }
 
     @Override
@@ -203,6 +189,7 @@ public class InsightRestServiceImpl implements InsightRestService {
                 } catch (NullPointerException e){
                     System.out.println("null pointer reached");
                 }
+                insight.setUsername(k.getUser().getUsername());
                 insight.setStatus(k.getStatus());
                 insightDetails.add(insight);
             }
@@ -240,7 +227,6 @@ public class InsightRestServiceImpl implements InsightRestService {
 
     @Override
     public List<RisetModel> getAllRiset() {
-        return risetDb.findAll();
+        return risetDb.findAllByStatusIsTrue();
     }
-
 }
