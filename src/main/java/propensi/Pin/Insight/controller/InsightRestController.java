@@ -13,6 +13,7 @@ import propensi.Pin.Insight.rest.InsightDetailCreate;
 import propensi.Pin.Insight.rest.InsightUserType;
 import propensi.Pin.Insight.service.*;
 
+import javax.validation.constraints.Null;
 import java.sql.Timestamp;
 import java.util.*;
 
@@ -88,14 +89,19 @@ public class InsightRestController {
                 list.add(insightModel.get().getInsightArchetypeModels().get(i).getUserType());
             }
             InsightDetail insightDetail = new InsightDetail();
-            insightDetail.setRiset(insightModel.get().getRisetInsight().getResearchTitle());
+            try{
+                insightDetail.setRiset(insightModel.get().getRisetInsight().getResearchTitle());
+
+            } catch (NullPointerException e){
+                System.out.println("catch");
+            }
             insightDetail.setInputDate(insightModel.get().getInputDate());
             insightDetail.setInsightStatement(insightModel.get().getInsightStatement());
             insightDetail.setInsightPicName(insightModel.get().getInsightPicName());
             insightDetail.setListArchetype(list);
-//            insightDetail.setArchetype(insightModel.get().getTypeInsight().getType());
+            insightDetail.setUsername(insightModel.get().getUser().getUsername());
+            System.out.println(insightModel.get().getUser().getUsername());
             insightDetail.setInsightTeamName(insightModel.get().getInsightTeamName());
-//            insightDetail.setRiset(insightModel.get().getRiset().getResearchTitle());
             insightDetail.setStatus(insightModel.get().getStatus());
             List<KomentarModel> insightKomentar = insightModel.get().getInsightCommentModels();
             for (KomentarModel komentar: insightKomentar
@@ -104,6 +110,7 @@ public class InsightRestController {
                 komentarObject.setKomentar(komentar.getKomentar());
                 komentarObject.setId(komentar.getId());
                 komentarObject.setUsername(komentar.getUserKomentar().getUsername());
+                komentarObject.setName(komentar.getUserKomentar().getNama());
                 komentarObject.setInsightId(Math.toIntExact(komentar.getInsightModel().getId()));
                 komentarObject.setInputDate(komentar.getInputDate());
                 listKomentar.add(komentarObject);
@@ -125,7 +132,11 @@ public class InsightRestController {
 //            dbData.setAll(insightModel.getInsightPicName(),insightModel.getInsightTeamName(), insightModel.getNote(), insightModel.getInsightStatement(), Math.toIntExact(insightModel.getRisetInsight().getId()), insightModel.getStatus(), insightModel.getInsightArchetypeModels().get());
             dbData.setInsightPicName(insightModel.getInsightPicName());
             dbData.setInsightTeamName(insightModel.getInsightTeamName());
-            dbData.setIdRiset(Math.toIntExact(insightModel.getRisetInsight().getId()));
+            try{
+                dbData.setIdRiset(Math.toIntExact(insightModel.getRisetInsight().getId()));
+            } catch (NullPointerException e){
+                System.out.println("expected");
+            }
             dbData.setInsightStatement(insightModel.getInsightStatement());
 
             for (InsightArchetypeModel i :
@@ -165,8 +176,12 @@ public class InsightRestController {
             Integer idUser = postData.getIdUser();
             Boolean status = postData.getStatus();
             List<Integer> archetype = postData.getArchetype();
-
-            RisetModel riset = risetService.getRisetById(Long.valueOf(idRiset)).get();
+            try{
+                RisetModel riset = risetService.getRisetById(Long.valueOf(idRiset)).get();
+                insightModel.setRisetInsight(riset);
+            } catch (NullPointerException e){
+                System.out.println("Expected");
+            }
 //            UserTypeModel archetypeServiceById = archetypeService.findById(archetype).get();
             UserModel user = userRestService.getUser(Long.valueOf(idUser)).get();
             insightModel.setInputDate(timestamp);
@@ -174,7 +189,7 @@ public class InsightRestController {
             insightModel.setInsightTeamName(team);
             insightModel.setInsightStatement(insightStatement);
             insightModel.setStatus(status);
-            insightModel.setRisetInsight(riset);
+
             insightModel.setUser(user);
             insightRestService.updateInsight(insightModel);
 
@@ -212,10 +227,13 @@ public class InsightRestController {
             Boolean status = postData.getStatus();
 
             System.out.println(postData.toString());
-            System.out.println(idRiset);
-            System.out.println(status);
+            try{
+                RisetModel riset = risetService.getRisetById(Long.valueOf(idRiset)).get();
+                insightModel.setRisetInsight(riset);
+            }catch (NullPointerException e){
+                System.out.println("this is empty");;
+            }
 
-            RisetModel riset = risetService.getRisetById(Long.valueOf(idRiset)).get();
             UserModel user = userRestService.getUser(Long.valueOf(idUser)).get();
 
             insightModel.setInputDate(timestamp);
@@ -223,7 +241,7 @@ public class InsightRestController {
             insightModel.setInsightTeamName(team);
             insightModel.setInsightStatement(insightValue);
             insightModel.setStatus(status);
-            insightModel.setRisetInsight(riset);
+
             insightModel.setUser(user);
             InsightModel savedData = insightRestService.createInsight(insightModel);
 
