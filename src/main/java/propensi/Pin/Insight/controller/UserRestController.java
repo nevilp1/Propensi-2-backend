@@ -3,16 +3,19 @@ package propensi.Pin.Insight.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import propensi.Pin.Insight.model.InsightModel;
 import propensi.Pin.Insight.model.UserModel;
 import propensi.Pin.Insight.rest.BaseResponse;
+import propensi.Pin.Insight.rest.Setting;
 import propensi.Pin.Insight.service.UserRestService;
 
 import java.util.*;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {Setting.frontend, Setting.local})
+@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
