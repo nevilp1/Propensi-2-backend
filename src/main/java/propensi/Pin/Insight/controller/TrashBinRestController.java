@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import propensi.Pin.Insight.model.*;
-import propensi.Pin.Insight.rest.ArchiveDetail;
-import propensi.Pin.Insight.rest.BaseResponse;
-import propensi.Pin.Insight.rest.InsightDetail;
-import propensi.Pin.Insight.rest.KomentarDetail;
+import propensi.Pin.Insight.rest.*;
 import propensi.Pin.Insight.service.InsightRestService;
 import propensi.Pin.Insight.service.RisetService;
 import propensi.Pin.Insight.service.TrashBinRestService;
@@ -136,21 +133,33 @@ public class TrashBinRestController {
     }
 
     @PutMapping(value = "/trashBin/insight/{id}/active")
-    private Object activeInsight(@PathVariable(value = "id") Long id) {
+    private BaseResponseRiset<InsightModel> activeInsight(@PathVariable(value = "id") Long id) {
+        BaseResponseRiset<InsightModel> response = new BaseResponseRiset<InsightModel>();
         try {
             Optional<InsightModel> insightModel = trashBinRestService.getInsight(id);
-            insightModel.get().setStatus(true);
-            trashBinRestService.activeInsight(insightModel.get());
-//            if(insightModel.get().getRisetInsight() == null){
-//                insightModel.get().setStatus(true);
-//                trashBinRestService.activeInsight(insightModel.get());
-//            }else if(insightModel.get().getRisetInsight().getStatus()== true){
-//                insightModel.get().setStatus(true);
-//                trashBinRestService.activeInsight(insightModel.get());
-//            }
-            return new BaseResponse<>(200, "Insight has been activated", null);
+//            insightModel.get().setStatus(true);
+//            trashBinRestService.activeInsight(insightModel.get());
+            if(insightModel.get().getRisetInsight() == null){
+                insightModel.get().setStatus(true);
+                trashBinRestService.activeInsight(insightModel.get());
+                response.setMessage("success");
+                return response;
+            }else if(insightModel.get().getRisetInsight().getStatus()== true){
+                insightModel.get().setStatus(true);
+                trashBinRestService.activeInsight(insightModel.get());
+                response.setMessage("success");
+                return response;
+            }else {
+                response.setMessage("error");
+                response.setStatus(400);
+            }
+            response.setMessage("success");
+            response.setStatus(200);
+            return response;
         } catch (NoSuchElementException e) {
-            return new BaseResponse<>(500, "Internal Server error", null);
+            response.setMessage("error");
+            response.setStatus(400);
+            return response;
         }
     }
 
