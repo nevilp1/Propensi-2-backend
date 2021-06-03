@@ -112,9 +112,18 @@ public class UserRestServiceImpl implements UserRestService{
         Set<String> listPic = new HashSet<>();
 
         for (int i = 0; i < listUser.size() ; i++) {
-            String role = listUser.get(i).getRoles().toString();
-            System.out.println(role);
-            listPic.add(listUser.get(i).getUsername());
+            if(listUser.get(i).getStatus() == false) {
+                continue;
+            }else {
+                Set<RoleModel> role = listUser.get(i).getRoles();
+                for (RoleModel j: role) {
+                    if (j.getId()==1) {
+                        continue;
+                    } else {
+                        listPic.add(listUser.get(i).getUsername());
+                    }
+                }
+            }
         }
         return listPic;
     }

@@ -136,6 +136,13 @@ public class TrashBinRestController {
             Optional<InsightModel> insightModel = trashBinRestService.getInsight(id);
             insightModel.get().setStatus(true);
             trashBinRestService.activeInsight(insightModel.get());
+//            if(insightModel.get().getRisetInsight() == null){
+//                insightModel.get().setStatus(true);
+//                trashBinRestService.activeInsight(insightModel.get());
+//            }else if(insightModel.get().getRisetInsight().getStatus()== true){
+//                insightModel.get().setStatus(true);
+//                trashBinRestService.activeInsight(insightModel.get());
+//            }
             return new BaseResponse<>(200, "Insight has been activated", null);
         } catch (NoSuchElementException e) {
             return new BaseResponse<>(500, "Internal Server error", null);
