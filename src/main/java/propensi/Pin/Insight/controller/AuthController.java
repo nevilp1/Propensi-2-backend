@@ -27,6 +27,7 @@ import propensi.Pin.Insight.security.jwt.JwtUtils;
 import propensi.Pin.Insight.security.service.UserDetailsImpl;
 
 import javax.management.relation.Role;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
@@ -53,6 +54,7 @@ public class AuthController {
     @Autowired
     JwtUtils jwtUtils;
 
+    @Transactional
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
@@ -87,6 +89,7 @@ public class AuthController {
         }
     }
 
+    @Transactional
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
         if (userDb.existsByUsername(signUpRequest.getUsername())) {
