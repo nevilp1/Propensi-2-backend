@@ -78,6 +78,7 @@ public class RisetServiceImpl implements RisetService{
                 data.put("insight_amount",allRiset.get(i).getInsight_amount());
                 data.put("id",allRiset.get(i).getId());
                 data.put("status", allRiset.get(i).getStatus());
+                data.put("user",allRiset.get(i).getUserRiset().getUsername());
                 list.add(data);
             }
         }
@@ -136,7 +137,7 @@ public class RisetServiceImpl implements RisetService{
     public HashMap<String, Object> getRisetByIdRiset(Long id) {
         HashMap<String,Object> target = new HashMap<>();
         Optional<RisetModel> targetRiset = risetDb.findById(id);
-
+        String status = "";
         // Untuk Detail Riset
         Date dateTempResearchDate = targetRiset.get().getResearchDate();
         DateFormat date = new SimpleDateFormat("E, dd MMM yyyy");
@@ -170,20 +171,23 @@ public class RisetServiceImpl implements RisetService{
                 insightTarget.put("insightArchetype", listArchetypeInsight);
             }
         }
-
-        target.put("research_title", targetRiset.get().getResearchTitle());
-        target.put("research_date", formated);
-        target.put("research_type", targetRiset.get().getResearchType());
-        target.put("archetype", list);
-        target.put("project_name", targetRiset.get().getProjectName());
-        target.put("team", targetRiset.get().getTeam());
-        target.put("pic", targetRiset.get().getPic());
-        target.put("input_date", formatedInput);
-        target.put("insight_amount", targetRiset.get().getInsight_amount());
-        target.put("research_link", targetRiset.get().getResearchLink());
-        target.put("research_date_update", formated2);
-        target.put("id",targetRiset.get().getId());
-        target.put("insightList",insightTarget);
+        if(targetRiset.get().getStatus() == true){
+            status = "Active";
+            target.put("research_title", targetRiset.get().getResearchTitle());
+            target.put("research_date", formated);
+            target.put("research_type", targetRiset.get().getResearchType());
+            target.put("archetype", list);
+            target.put("project_name", targetRiset.get().getProjectName());
+            target.put("team", targetRiset.get().getTeam());
+            target.put("pic", targetRiset.get().getPic());
+            target.put("input_date", formatedInput);
+            target.put("insight_amount", targetRiset.get().getInsight_amount());
+            target.put("research_link", targetRiset.get().getResearchLink());
+            target.put("research_date_update", formated2);
+            target.put("id",targetRiset.get().getId());
+            target.put("insightList",insightTarget);
+            target.put("status",status);
+        }
         return target;
     }
 
