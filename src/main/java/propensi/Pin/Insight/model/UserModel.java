@@ -39,7 +39,7 @@ public class UserModel implements Serializable {
     private String username;
 
     @NotNull
-//    @Lob
+    @Lob
     @Column(name="password", nullable = false)
     private String password;
 
