@@ -143,18 +143,18 @@ public class TrashBinRestController {
                 insightModel.get().setStatus(true);
                 trashBinRestService.activeInsight(insightModel.get());
                 response.setMessage("success");
+                response.setStatus(200);
                 return response;
             }else if(insightModel.get().getRisetInsight().getStatus()== true){
                 insightModel.get().setStatus(true);
                 trashBinRestService.activeInsight(insightModel.get());
                 response.setMessage("success");
+                response.setStatus(200);
                 return response;
             }else {
                 response.setMessage("error");
                 response.setStatus(400);
             }
-            response.setMessage("success");
-            response.setStatus(200);
             return response;
         } catch (NoSuchElementException e) {
             response.setMessage("error");
