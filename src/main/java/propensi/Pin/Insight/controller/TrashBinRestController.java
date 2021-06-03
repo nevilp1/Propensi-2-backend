@@ -99,7 +99,12 @@ public class TrashBinRestController {
                 list.add(insightModel.get().getInsightArchetypeModels().get(i).getUserType());
             }
             InsightDetail insightDetail = new InsightDetail();
-            insightDetail.setRiset(insightModel.get().getRisetInsight().getResearchTitle());
+            try{
+                insightDetail.setRiset(insightModel.get().getRisetInsight().getResearchTitle());
+
+            } catch (NullPointerException e){
+                System.out.println("catch");
+            }
             insightDetail.setInputDate(insightModel.get().getInputDate());
             insightDetail.setInsightStatement(insightModel.get().getInsightStatement());
             insightDetail.setInsightPicName(insightModel.get().getInsightPicName());

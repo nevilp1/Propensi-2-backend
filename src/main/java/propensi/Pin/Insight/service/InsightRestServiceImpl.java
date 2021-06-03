@@ -168,7 +168,6 @@ public class InsightRestServiceImpl implements InsightRestService {
 
         List<InsightArchetypeModel> archetypeModels = new ArrayList<>();
 
-
         for (int i = 0; i < insightDataFromDb.size(); i++) {
 
             List<UserTypeModel> listArchetype = new ArrayList<>();
