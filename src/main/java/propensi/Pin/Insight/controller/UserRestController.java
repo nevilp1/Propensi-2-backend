@@ -16,7 +16,6 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 @CrossOrigin(origins = {Setting.frontend, Setting.local})
-@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
