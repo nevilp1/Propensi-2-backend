@@ -7,10 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import propensi.Pin.Insight.model.*;
-import propensi.Pin.Insight.rest.ArchiveDetail;
-import propensi.Pin.Insight.rest.BaseResponse;
-import propensi.Pin.Insight.rest.InsightDetail;
-import propensi.Pin.Insight.rest.KomentarDetail;
+import propensi.Pin.Insight.rest.*;
 import propensi.Pin.Insight.service.InsightRestService;
 import propensi.Pin.Insight.service.RisetService;
 import propensi.Pin.Insight.service.TrashBinRestService;
@@ -84,25 +81,12 @@ public class TrashBinRestController {
         }
     }
 
-//    @GetMapping("/trashBin/insight1")
-//    private List<Map<String, Object>> retrieveTrashBinInsight() {return trashBinRestService.listInsight();}
-
     @GetMapping("/trashBin/insight")
     private BaseResponse<List> getAllInsight() {
         List<InsightDetail> insightList = trashBinRestService.getAllInsight();
         return new BaseResponse<>(200, "Insights data retrived", insightList);
     }
 
-//    @GetMapping(value = "/trashBin/insight/{id}")
-//    private HashMap<String,Object> retrieveInsight (@PathVariable (value = "id") Long id){
-//        try {
-//            return trashBinRestService.getInsightByIdInsight(id);
-//        }catch (NoSuchElementException e){
-//            throw new ResponseStatusException(
-//                    HttpStatus.NOT_FOUND, "Insight with ID " + String.valueOf(id) + " doesn't exist!"
-//            );
-//        }
-//    }
 
     @GetMapping(value = "/trashBin/insight/{id}")
     private Object getInsight(@PathVariable(value = "id") Long id) {
@@ -115,7 +99,12 @@ public class TrashBinRestController {
                 list.add(insightModel.get().getInsightArchetypeModels().get(i).getUserType());
             }
             InsightDetail insightDetail = new InsightDetail();
-            insightDetail.setRiset(insightModel.get().getRisetInsight().getResearchTitle());
+            try{
+                insightDetail.setRiset(insightModel.get().getRisetInsight().getResearchTitle());
+
+            } catch (NullPointerException e){
+                System.out.println("catch");
+            }
             insightDetail.setInputDate(insightModel.get().getInputDate());
             insightDetail.setInsightStatement(insightModel.get().getInsightStatement());
             insightDetail.setInsightPicName(insightModel.get().getInsightPicName());
@@ -144,14 +133,33 @@ public class TrashBinRestController {
     }
 
     @PutMapping(value = "/trashBin/insight/{id}/active")
-    private Object activeInsight(@PathVariable(value = "id") Long id) {
+    private BaseResponseRiset<InsightModel> activeInsight(@PathVariable(value = "id") Long id) {
+        BaseResponseRiset<InsightModel> response = new BaseResponseRiset<InsightModel>();
         try {
             Optional<InsightModel> insightModel = trashBinRestService.getInsight(id);
-            insightModel.get().setStatus(true);
-            trashBinRestService.activeInsight(insightModel.get());
-            return new BaseResponse<>(200, "Insight has been activated", null);
+//            insightModel.get().setStatus(true);
+//            trashBinRestService.activeInsight(insightModel.get());
+            if(insightModel.get().getRisetInsight() == null){
+                insightModel.get().setStatus(true);
+                trashBinRestService.activeInsight(insightModel.get());
+                response.setMessage("success");
+                response.setStatus(200);
+                return response;
+            }else if(insightModel.get().getRisetInsight().getStatus()== true){
+                insightModel.get().setStatus(true);
+                trashBinRestService.activeInsight(insightModel.get());
+                response.setMessage("success");
+                response.setStatus(200);
+                return response;
+            }else {
+                response.setMessage("error");
+                response.setStatus(400);
+            }
+            return response;
         } catch (NoSuchElementException e) {
-            return new BaseResponse<>(500, "Internal Server error", null);
+            response.setMessage("error");
+            response.setStatus(400);
+            return response;
         }
     }
 

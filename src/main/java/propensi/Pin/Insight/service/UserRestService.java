@@ -4,8 +4,8 @@ import propensi.Pin.Insight.model.InsightModel;
 import propensi.Pin.Insight.model.RisetModel;
 import propensi.Pin.Insight.model.UserModel;
 
+import javax.transaction.Transactional;
 import java.util.*;
-
 public interface UserRestService {
     List<Map<String, Object>> listUser();
     Optional<UserModel> getUser(Long id);

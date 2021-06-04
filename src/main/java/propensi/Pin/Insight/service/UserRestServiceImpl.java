@@ -40,14 +40,18 @@ public class UserRestServiceImpl implements UserRestService{
     @Override
     public List<Map<String, Object>> listUser() {
         List<Map<String, Object>> userList = new ArrayList<>();
+        System.out.println("=========LINE 43==========");
         List<UserModel> allUser = userDb.findAll();
-
+        System.out.println("=========LINE 5==========");
         for (int i = 0; i < allUser.size(); i++) {
             if(allUser.get(i).getStatus() == false){
+                System.out.println("=========LINE 48==========");
                 continue;
             }else {
+                System.out.println("=========LINE 51==========");
                 Map<String, Object> data = new HashMap<>();
                 UserModel target = allUser.get(i);
+                System.out.println("=========LINE 54==========");
                 String idUser = "ID-" + target.getId().toString();
                 data.put("id", target.getId());
                 data.put("idUser", idUser);
@@ -58,6 +62,7 @@ public class UserRestServiceImpl implements UserRestService{
                 data.put("status", target.getStatus());
                 String userRole = target.getRoles().toString();
                 Set<RoleModel> x = target.getRoles();
+                System.out.println("=========LINE 65==========");
                 userList.add(data);
             }
         }
@@ -112,9 +117,18 @@ public class UserRestServiceImpl implements UserRestService{
         Set<String> listPic = new HashSet<>();
 
         for (int i = 0; i < listUser.size() ; i++) {
-            String role = listUser.get(i).getRoles().toString();
-            System.out.println(role);
-            listPic.add(listUser.get(i).getUsername());
+            if(listUser.get(i).getStatus() == false) {
+                continue;
+            }else {
+                Set<RoleModel> role = listUser.get(i).getRoles();
+                for (RoleModel j: role) {
+                    if (j.getId()==1) {
+                        continue;
+                    } else {
+                        listPic.add(listUser.get(i).getUsername());
+                    }
+                }
+            }
         }
         return listPic;
     }

@@ -147,7 +147,11 @@ public class TrashBinRestServiceImpl implements TrashBinRestService {
                 insight.setInsightPicName(k.getInsightPicName());
                 insight.setListArchetype(listArchetype);
                 insight.setInsightTeamName(k.getInsightTeamName());
-                insight.setRiset(k.getRisetInsight().getResearchTitle());
+                try {
+                    insight.setRiset(k.getRisetInsight().getResearchTitle());
+                } catch (NullPointerException e) {
+                    System.out.println("null pointer reached");
+                }
                 insight.setStatus(k.getStatus());
                 insightDetails.add(insight);
             }

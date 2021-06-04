@@ -3,16 +3,19 @@ package propensi.Pin.Insight.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import propensi.Pin.Insight.model.InsightModel;
 import propensi.Pin.Insight.model.UserModel;
 import propensi.Pin.Insight.rest.BaseResponse;
+import propensi.Pin.Insight.rest.Setting;
 import propensi.Pin.Insight.service.UserRestService;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {Setting.frontend, Setting.local})
 @RestController
 @RequestMapping("/api")
 public class UserRestController {
@@ -20,7 +23,9 @@ public class UserRestController {
     UserRestService userRestService;
 
     @GetMapping("/users")
-    private List<Map<String, Object>> retrieveListUser() {return userRestService.listUser();}
+    private List<Map<String, Object>> retrieveListUser() {
+        System.out.println("test");
+        return userRestService.listUser();}
 
     @GetMapping(value = "/user/{id}")
     private HashMap<String, Object> retrieveUser(@PathVariable(value = "id") Long id) {
