@@ -5,11 +5,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import propensi.Pin.Insight.model.UserModel;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 import java.util.Optional;
 
 @Repository
+@Transactional
 public interface UserDb extends JpaRepository<UserModel, Long> {
 
     Optional<UserModel> findById(Long id);

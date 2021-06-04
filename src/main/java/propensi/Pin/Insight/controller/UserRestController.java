@@ -12,12 +12,14 @@ import propensi.Pin.Insight.rest.BaseResponse;
 import propensi.Pin.Insight.rest.Setting;
 import propensi.Pin.Insight.service.UserRestService;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @CrossOrigin(origins = {Setting.frontend, Setting.local})
 @PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/api")
+@Transactional
 public class UserRestController {
     @Autowired
     UserRestService userRestService;
