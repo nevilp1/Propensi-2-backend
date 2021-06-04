@@ -38,7 +38,6 @@ public class UserRestServiceImpl implements UserRestService{
     }
 
     @Override
-    @Transactional
     public List<Map<String, Object>> listUser() {
         List<Map<String, Object>> userList = new ArrayList<>();
         System.out.println("=========LINE 43==========");

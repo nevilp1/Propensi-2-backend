@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-@Transactional
 public interface UserDb extends JpaRepository<UserModel, Long> {
 
     Optional<UserModel> findById(Long id);

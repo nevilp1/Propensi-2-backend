@@ -16,16 +16,16 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 @CrossOrigin(origins = {Setting.frontend, Setting.local})
-@PreAuthorize("hasRole('ADMIN')")
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class UserRestController {
     @Autowired
     UserRestService userRestService;
 
     @GetMapping("/users")
-    private List<Map<String, Object>> retrieveListUser() {return userRestService.listUser();}
+    private List<Map<String, Object>> retrieveListUser() {
+        System.out.println("test");
+        return userRestService.listUser();}
 
     @GetMapping(value = "/user/{id}")
     private HashMap<String, Object> retrieveUser(@PathVariable(value = "id") Long id) {
