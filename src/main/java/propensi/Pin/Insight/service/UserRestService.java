@@ -7,7 +7,8 @@ import propensi.Pin.Insight.model.UserModel;
 import java.util.*;
 
 public interface UserRestService {
-    List<Map<String, Object>> listUser();
+//    List<Map<String, Object>> listUser();
+    List<UserModel> listUser();
     Optional<UserModel> getUser(Long id);
 //    void addUser(UserModel add);
     UserModel archiveUser(UserModel userModel);
