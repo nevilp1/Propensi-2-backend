@@ -37,42 +37,36 @@ public class UserRestServiceImpl implements UserRestService{
         return userDb.findById(id);
     }
 
-//    @Override
-//    public List<Map<String, Object>> listUser() {
-//        List<Map<String, Object>> userList = new ArrayList<>();
-//        System.out.println("=========LINE 43==========");
-//        List<UserModel> allUser = userDb.findAll();
-//        System.out.println("=========LINE 5==========");
-//        for (int i = 0; i < allUser.size(); i++) {
-//            if(allUser.get(i).getStatus() == false){
-//                System.out.println("=========LINE 48==========");
-//                continue;
-//            }else {
-//                System.out.println("=========LINE 51==========");
-//                Map<String, Object> data = new HashMap<>();
-//                UserModel target = allUser.get(i);
-//                System.out.println("=========LINE 54==========");
-//                String idUser = "ID-" + target.getId().toString();
-//                data.put("id", target.getId());
-//                data.put("idUser", idUser);
-//                data.put("nama", target.getNama());
-//                data.put("username", target.getUsername());
-//                data.put("team", target.getTeam());
-//                data.put("role", target.getRoles());
-//                data.put("status", target.getStatus());
-//                String userRole = target.getRoles().toString();
-//                Set<RoleModel> x = target.getRoles();
-//                System.out.println("=========LINE 65==========");
-//                userList.add(data);
-//            }
-//        }
-//        return userList;
-//    }
-
-
     @Override
-    public List<UserModel> listUser() {
-        return userDb.findAll();
+    public List<Map<String, Object>> listUser() {
+        List<Map<String, Object>> userList = new ArrayList<>();
+        System.out.println("=========LINE 43==========");
+        List<UserModel> allUser = userDb.findAll();
+        System.out.println("=========LINE 5==========");
+        for (int i = 0; i < allUser.size(); i++) {
+            if(allUser.get(i).getStatus() == false){
+                System.out.println("=========LINE 48==========");
+                continue;
+            }else {
+                System.out.println("=========LINE 51==========");
+                Map<String, Object> data = new HashMap<>();
+                UserModel target = allUser.get(i);
+                System.out.println("=========LINE 54==========");
+                String idUser = "ID-" + target.getId().toString();
+                data.put("id", target.getId());
+                data.put("idUser", idUser);
+                data.put("nama", target.getNama());
+                data.put("username", target.getUsername());
+                data.put("team", target.getTeam());
+                data.put("role", target.getRoles());
+                data.put("status", target.getStatus());
+                String userRole = target.getRoles().toString();
+                Set<RoleModel> x = target.getRoles();
+                System.out.println("=========LINE 65==========");
+                userList.add(data);
+            }
+        }
+        return userList;
     }
 
     @Override
