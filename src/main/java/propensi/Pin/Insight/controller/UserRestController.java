@@ -22,11 +22,8 @@ public class UserRestController {
     @Autowired
     UserRestService userRestService;
 
-//    @GetMapping("/users")
-//    private List<Map<String, Object>> retrieveListUser() {return userRestService.listUser();}
-
     @GetMapping("/users")
-    private List<UserModel> retrieveListUser() {return userRestService.listUser();}
+    private List<Map<String, Object>> retrieveListUser() {return userRestService.listUser();}
 
     @GetMapping(value = "/user/{id}")
     private HashMap<String, Object> retrieveUser(@PathVariable(value = "id") Long id) {
