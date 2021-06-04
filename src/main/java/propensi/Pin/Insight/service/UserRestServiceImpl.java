@@ -16,7 +16,6 @@ import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
-@Transactional
 public class UserRestServiceImpl implements UserRestService{
   
     @Autowired
